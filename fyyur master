@@ -1,0 +1,5198 @@
+@@ -217,14 +217,14 @@ GEM
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
+    mercenary (0.3.6)
+    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
+    minima (2.5.1)
+      jekyll (>= 3.5, < 5.0)
+      jekyll-feed (~> 0.9)
+      jekyll-seo-tag (~> 2.1)
+    minitest (5.14.4)
+    multipart-post (2.1.1)
+    nokogiri (1.11.3)
+    nokogiri (1.11.4)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
+    octokit (4.20.0)
+@@ -1,30 +1,22 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>{% if post.title %}{{ post.title }} | {{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+<meta name="author" content="{{ site.author }}">
+<meta name="description" content="{{ site.description }}">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="{{ site.baseurl }}/node_modules/reveal.js/css/reveal.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="{{site.baseurl}}/node_modules/reveal.js/css/reset.css">
+<link rel="stylesheet" href="{{site.baseurl}}/node_modules/reveal.js/css/reveal.css">
+<link rel="stylesheet" href="{{site.baseurl}}/node_modules/reveal.js/css/theme/moon.css">
+
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+<!-- jQuery -->
+<script src="{{ site.baseurl }}/assets/js/jquery-1.11.1.min.js"></script>
+<!-- Theme used for syntax highlighting of code -->
+<link rel="stylesheet" href="{{site.baseurl}}/node_modules/reveal.js/lib/css/monokai.css">
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<!-- Printing and PDF exports -->
+<script>
+	if( window.location.search.match( /print-pdf/gi ) ) {
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = '{{ site.baseurl }}/reveal.js/css/print/pdf.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	}
+</script>
+
+<!--[if lt IE 9]>
+<script src="{{ site.baseurl }}/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+	var link = document.createElement( 'link' );
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'node_modules/reveal.js/css/print/paper.css';
+	document.getElementsByTagName( 'head' )[0].appendChild( link );
+</script> 
+ 73  _includes/script.html 
+@@ -1,57 +1,16 @@
+<script src="{{ site.baseurl }}/reveal.js/lib/js/head.min.js"></script>
+<script src="{{ site.baseurl }}/reveal.js/js/reveal.js"></script>
+
+<!-- reveal.js init -->
+<script>
+  var baseUrl = "{{ site.baseurl }}"
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    {% if site.reveal %}
+    {% for attr in site.reveal %}{{attr[0]}}: {% unless {attr[1]} == false or {attr[1]} == true or {attr[0]} == "width" or {attr[0]} == "height" %}'{{attr[1]}}',{% else %}{{attr[1]}},{% endunless %}
+    {% endfor %}
+    {% endif %}
+
+    theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+    transition: Reveal.getQueryHash().transition || {% if site.reveal.transition %}'{{ site.reveal.transition }}',{% else %}'default',{% endif %} // default/cube/page/concave/zoom/linear/fade/none
+
+    // Optional libraries used to extend on reveal.js
+    dependencies: [
+      // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+      { src: baseUrl + '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+      // Zoom in and out with Alt+click
+      { src: baseUrl + '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+
+      // Speaker notes
+      { src: baseUrl + '/reveal.js/plugin/notes/notes.js', async: true },
+
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: baseUrl + '/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+    ]
+  });
+
+  {% if site.slideNumber.format and site.slideNumber.format != "none" %}
+  // Shows the slide number using default formatting
+  Reveal.configure({ slideNumber: true });
+  Reveal.configure({ slideNumber: '{{ site.slideNumber.format }}' });
+  {% endif %}
+</script>
+<!-- End reveal.js init -->
+
+<!-- Fontawesome -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    //$("a[href*='youtube.com/']").prepend( $( "<i class='fa fa-youtube-play'>&nbsp;</i>" ) );
+    //$("a[href*='vimeo.com/']").prepend( $( "<i class='fa fa-vimeo-square'>&nbsp;</i>" ) );
+    //$("a[href$='/download']").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    //$("a.download").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    $("a.external").append( $( "<i class='fa fa-external-link'></i>" ) );
+    $("a.twitter").append( $( "<i class='fa fa-twitter'></i>" ) );
+    $("a.github").append( $( "<i class='fa fa-github'></i>" ) );
+    $("blockquote").prepend( $( "<i class='fa fa-quote-left'></i>" ) );
+    $("a.button.lighter").click( function() { $("html.dark").removeClass("dark").addClass("light"); });
+    $("a.button.darker").click( function() { $("html.light").removeClass("light").addClass("dark"); });
+  });
+</script>
+<!-- End Fontawesome -->
+<script src="{{ site.baseurl }}/node_modules/reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				hash: true,
+				dependencies: [
+					{ src: 'node_modules/reveal.js/plugin/markdown/marked.js' },
+					{ src: 'node_modules/reveal.js/plugin/markdown/markdown.js' },
+					{ src: 'node_modules/reveal.js/plugin/highlight/highlight.js' },
+					{ src: 'node_modules/reveal.js/plugin/notes/notes.js', async: true }
+          
+          @@ -0,0 +1,20 @@
+# EditorConfig is awesome: http://EditorConfig.org
+root = false
+
+[*]
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = false
+charset = utf-8
+
+[*.{json,js,css,scss,yml,htm,html}]
+indent_style = space
+indent_size = 2
+
+[*.{md,mdown,markdown}]
+trim_trailing_whitespace = false
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+ 4  .gitignore 
+@@ -0,0 +1,4 @@
+_site/
+.sass-cache/
+.jekyll-metadata
+.bundle
+ 3  .gitmodules 
+@@ -0,0 +1,3 @@
+[submodule "reveal.js"]
+	path = reveal.js
+	url = https://github.com/hakimel/reveal.js.git
+ 5  Gemfile 
+@@ -0,0 +1,5 @@
+source "https://rubygems.org"
+
+gem 'github-pages'
+gem 'html-proofer'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+ 217  Gemfile.lock 
+@@ -0,0 +1,217 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.2.8)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
+    colorator (1.1.0)
+    colored (1.2)
+    ethon (0.10.1)
+      ffi (>= 1.3.0)
+    execjs (2.7.0)
+    faraday (0.12.2)
+      multipart-post (>= 1.2, < 3)
+    ffi (1.9.18)
+    forwardable-extended (2.6.0)
+    gemoji (3.0.0)
+    github-pages (148)
+      activesupport (= 4.2.8)
+      github-pages-health-check (= 1.3.5)
+      jekyll (= 3.5.1)
+      jekyll-avatar (= 0.4.2)
+      jekyll-coffeescript (= 1.0.1)
+      jekyll-default-layout (= 0.1.4)
+      jekyll-feed (= 0.9.2)
+      jekyll-gist (= 1.4.1)
+      jekyll-github-metadata (= 2.6.0)
+      jekyll-mentions (= 1.2.0)
+      jekyll-optional-front-matter (= 0.2.0)
+      jekyll-paginate (= 1.1.0)
+      jekyll-readme-index (= 0.1.0)
+      jekyll-redirect-from (= 0.12.1)
+      jekyll-relative-links (= 0.4.1)
+      jekyll-sass-converter (= 1.5.0)
+      jekyll-seo-tag (= 2.2.3)
+      jekyll-sitemap (= 1.0.0)
+      jekyll-swiss (= 0.4.0)
+      jekyll-theme-architect (= 0.0.4)
+      jekyll-theme-cayman (= 0.0.4)
+      jekyll-theme-dinky (= 0.0.4)
+      jekyll-theme-hacker (= 0.0.4)
+      jekyll-theme-leap-day (= 0.0.4)
+      jekyll-theme-merlot (= 0.0.4)
+      jekyll-theme-midnight (= 0.0.4)
+      jekyll-theme-minimal (= 0.0.4)
+      jekyll-theme-modernist (= 0.0.4)
+      jekyll-theme-primer (= 0.3.1)
+      jekyll-theme-slate (= 0.0.4)
+      jekyll-theme-tactile (= 0.0.4)
+      jekyll-theme-time-machine (= 0.0.4)
+      jekyll-titles-from-headings (= 0.3.0)
+      jemoji (= 0.8.0)
+      kramdown (= 1.13.2)
+      liquid (= 4.0.0)
+      listen (= 3.0.6)
+      mercenary (~> 0.3)
+      minima (= 2.1.1)
+      rouge (= 1.11.1)
+      terminal-table (~> 1.4)
+    github-pages-health-check (1.3.5)
+      addressable (~> 2.3)
+      net-dns (~> 0.8)
+      octokit (~> 4.0)
+      public_suffix (~> 2.0)
+      typhoeus (~> 0.7)
+    html-pipeline (2.6.0)
+      activesupport (>= 2)
+      nokogiri (>= 1.4)
+    html-proofer (3.7.2)
+      activesupport (>= 4.2, < 6.0)
+      addressable (~> 2.3)
+      colored (~> 1.2)
+      mercenary (~> 0.3.2)
+      nokogiri (~> 1.7)
+      parallel (~> 1.3)
+      typhoeus (~> 0.7)
+      yell (~> 2.0)
+    i18n (0.8.6)
+    jekyll (3.5.1)
+      addressable (~> 2.4)
+      colorator (~> 1.0)
+      jekyll-sass-converter (~> 1.0)
+      jekyll-watch (~> 1.1)
+      kramdown (~> 1.3)
+      liquid (~> 4.0)
+      mercenary (~> 0.3.3)
+      pathutil (~> 0.9)
+      rouge (~> 1.7)
+      safe_yaml (~> 1.0)
+    jekyll-avatar (0.4.2)
+      jekyll (~> 3.0)
+    jekyll-coffeescript (1.0.1)
+      coffee-script (~> 2.2)
+    jekyll-default-layout (0.1.4)
+      jekyll (~> 3.0)
+    jekyll-feed (0.9.2)
+      jekyll (~> 3.3)
+    jekyll-gist (1.4.1)
+      octokit (~> 4.2)
+    jekyll-github-metadata (2.6.0)
+      jekyll (~> 3.1)
+      octokit (~> 4.0, != 4.4.0)
+    jekyll-mentions (1.2.0)
+      activesupport (~> 4.0)
+      html-pipeline (~> 2.3)
+      jekyll (~> 3.0)
+    jekyll-optional-front-matter (0.2.0)
+      jekyll (~> 3.0)
+    jekyll-paginate (1.1.0)
+    jekyll-readme-index (0.1.0)
+      jekyll (~> 3.0)
+    jekyll-redirect-from (0.12.1)
+      jekyll (~> 3.3)
+    jekyll-relative-links (0.4.1)
+      jekyll (~> 3.3)
+    jekyll-sass-converter (1.5.0)
+      sass (~> 3.4)
+    jekyll-seo-tag (2.2.3)
+      jekyll (~> 3.3)
+    jekyll-sitemap (1.0.0)
+      jekyll (~> 3.3)
+    jekyll-swiss (0.4.0)
+    jekyll-theme-architect (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-cayman (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-dinky (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-hacker (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-leap-day (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-merlot (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-midnight (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-minimal (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-modernist (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-primer (0.3.1)
+      jekyll (~> 3.3)
+    jekyll-theme-slate (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-tactile (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-time-machine (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-titles-from-headings (0.3.0)
+      jekyll (~> 3.3)
+    jekyll-watch (1.5.0)
+      listen (~> 3.0, < 3.1)
+    jemoji (0.8.0)
+      activesupport (~> 4.0)
+      gemoji (~> 3.0)
+      html-pipeline (~> 2.2)
+      jekyll (>= 3.0)
+    kramdown (1.13.2)
+    liquid (4.0.0)
+    listen (3.0.6)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9.7)
+    mercenary (0.3.6)
+    mini_portile2 (2.3.0)
+    minima (2.1.1)
+      jekyll (~> 3.3)
+    minitest (5.10.3)
+    multipart-post (2.0.0)
+    net-dns (0.8.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
+    octokit (4.7.0)
+      sawyer (~> 0.8.0, >= 0.5.3)
+    parallel (1.12.0)
+    pathutil (0.14.0)
+      forwardable-extended (~> 2.6)
+    public_suffix (2.0.5)
+    rb-fsevent (0.10.2)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    rouge (1.11.1)
+    safe_yaml (1.0.4)
+    sass (3.5.1)
+      sass-listen (~> 4.0.0)
+    sass-listen (4.0.0)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+    sawyer (0.8.1)
+      addressable (>= 2.3.5, < 2.6)
+      faraday (~> 0.8, < 1.0)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
+    thread_safe (0.3.6)
+    typhoeus (0.8.0)
+      ethon (>= 0.8.0)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
+    unicode-display_width (1.3.0)
+    yell (2.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  github-pages
+  html-proofer
+  tzinfo-data
+
+BUNDLED WITH
+   1.16.1
+ 21  LICENSE 
+@@ -0,0 +1,21 @@
+(MIT License)
+
+Copyright (C) 2016 Thomas Friese, http://tasmo.rocks
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+ 5  README.md 
+@@ -0,0 +1,5 @@
+# Caption this
+
+This repository hosts a Markdown-driven slideshow. Let the bot show you around. But if you want to know more, keep reading!
+
+If you're using [GitHub Pages](https://help.github.com/articles/what-is-github-pages/), files inside the `_posts` folder will be rendered on the web page. They must be named with the pattern `####-##-##-description.md`. The contents of the file must contain [YAML front-matter](https://jekyllrb.com/docs/frontmatter/).
+ 116  _config.yml 
+@@ -0,0 +1,116 @@
+timezone:    Europe/Berlin
+future:      false
+# Set baseurl to the base path of the site eg "/mytalk"
+baseurl:     "/caption-this"
+# The allowed values are 'rouge', 'pygments' or null.
+highlighter: rouge
+# markdown - Valid options are [ maruku | rdiscount | kramdown | redcarpet ]
+markdown:    kramdown
+lsi:         false
+permalink:   "/:title"
+
+kramdown:
+  ## for german: "sbquo,lsquo,bdquo,ldquo"
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+plugins:
+  - jemoji
+
+## personalize your slide show
+title:       caption-this
+author:      GitHubTeacher
+description: A fun activity for learning Git and GitHub.
+
+sass:
+  style:     :compressed
+
+## solarized variant (dark/light)
+solarized:
+  theme:     dark
+
+slideNumber:
+  # Slide number formatting can be configured using these variables:
+  #  "h.v":  horizontal . vertical slide number (default)
+  #  "h/v":  horizontal / vertical slide number
+  #    "c":  flattened slide number
+  #  "c/t":  flattened slide number / total slides
+  # "none":  dont't show slide numbers
+  format:    "c/t"
+
+## Reveal.initialize
+## At the end of your page Jekyll initializes reveal by running the following code. Note that all config values are optional and will default as specified below.
+## Note that the new default vertical centering option will break compatibility with slides that were using transitions with backgrounds ("cube" and "page"). To restore the previous behavior, set "center" to "false".
+reveal:
+  ## Display controls in the bottom right corner
+  controls: false
+  ## Display a presentation progress bar
+  progress: true
+  ## Display the page number of the current slide
+  #slideNumber: false
+  ## Push each slide change to the browser history
+  history: true
+  ## Enable keyboard shortcuts for navigation
+  keyboard: true
+  ## Enable the slide overview mode
+  overview: true
+  ## Vertical centering of slides
+  center: true
+  ## Enables touch navigation on devices with touch input
+  touch: true
+  ## Loop the presentation
+  loop: false
+  ## Change the presentation direction to be RTL
+  #rtl: false
+  ## Turns fragments on and off globally
+  fragments: true
+  ## Flags if the presentation is running in an embedded mode
+  ## i.e. contained within a limited portion of the screen
+  #embedded: false
+  ## Number of milliseconds between automatically proceeding to the
+  ## next slide, disabled when set to 0, this value can be overwritten
+  ## by using a data-autoslide attribute on your slides
+  #autoSlide: 0
+  ## Stop auto-sliding after user input
+  #autoSlideStoppable: true
+  ## Enable slide navigation via mouse wheel
+  #mouseWheel: false
+  ## Hides the address bar on mobile devices
+  #hideAddressBar: true
+  ## Opens links in an iframe preview overlay
+  #previewLinks: false
+  ## Transition style (default/cube/page/concave/zoom/linear/fade/none)
+  transition: linear
+  ## Transition speed (default/fast/slow)
+  #transitionSpeed: default
+  ## Transition style for full page slide backgrounds (default/none/slide/concave/convex/zoom)
+  backgroundTransition: slide
+  ## Number of slides away from the current that are visible
+  #viewDistance: 3
+  ## Parallax background image (e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  #parallaxBackgroundImage: ''
+  ## Parallax background size (CSS syntax, e.g. "2100px 900px")
+  #parallaxBackgroundSize: ''
+  ## The "normal" size of the presentation, aspect ratio will be preserved
+  ## when the presentation is scaled to fit different resolutions. Can be
+  ## specified using percentage units.
+  width: 1000
+  height: 920
+  ## Factor of the display size that should remain empty around the content
+  margin: 0.1
+  ## Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2
+  maxScale: 1.5
+
+exclude: [
+  "Gemfile",
+  "Gemfile.lock",
+  "vendor",
+  "reveal.js/test",
+  "reveal.js/index.html",
+  "reveal.js/README.md",
+  "reveal.js/bower.json",
+  "reveal.js/Gruntfile.js",
+  "reveal.js/CONTRIBUTING.md",
+  "reveal.js/LICENSE",
+  "reveal.js/package.json"
+]
+ 30  _includes/head.html 
+@@ -0,0 +1,30 @@
+<meta charset="utf-8">
+
+<title>{% if post.title %}{{ post.title }} | {{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+<meta name="author" content="{{ site.author }}">
+<meta name="description" content="{{ site.description }}">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+<!-- jQuery -->
+<script src="{{ site.baseurl }}/assets/js/jquery-1.11.1.min.js"></script>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+	if( window.location.search.match( /print-pdf/gi ) ) {
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = '{{ site.baseurl }}/reveal.js/css/print/pdf.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	}
+</script>
+
+<!--[if lt IE 9]>
+<script src="{{ site.baseurl }}/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+ 60  _includes/script.html 
+@@ -0,0 +1,60 @@
+<script src="{{ site.baseurl }}/reveal.js/lib/js/head.min.js"></script>
+<script src="{{ site.baseurl }}/reveal.js/js/reveal.js"></script>
+
+<!-- reveal.js init -->
+<script>
+  var baseUrl = "{{ site.baseurl }}"
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    {% if site.reveal %}
+    {% for attr in site.reveal %}{{attr[0]}}: {% unless {attr[1]} == false or {attr[1]} == true or {attr[0]} == "width" or {attr[0]} == "height" %}'{{attr[1]}}',{% else %}{{attr[1]}},{% endunless %}
+    {% endfor %}
+    {% endif %}
+
+    theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+    transition: Reveal.getQueryHash().transition || {% if site.reveal.transition %}'{{ site.reveal.transition }}',{% else %}'default',{% endif %} // default/cube/page/concave/zoom/linear/fade/none
+
+    // Optional libraries used to extend on reveal.js
+    dependencies: [
+      // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+      { src: baseUrl + '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+      // Zoom in and out with Alt+click
+      { src: baseUrl + '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+
+      // Speaker notes
+      { src: baseUrl + '/reveal.js/plugin/notes/notes.js', async: true },
+
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: baseUrl + '/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } },
+
+      // MathJax
+      { src: baseUrl + '/reveal.js/plugin/math/math.js', async: true }
+    ]
+  });
+
+  {% if site.slideNumber.format and site.slideNumber.format != "none" %}
+  // Shows the slide number using default formatting
+  Reveal.configure({ slideNumber: true });
+  Reveal.configure({ slideNumber: '{{ site.slideNumber.format }}' });
+  {% endif %}
+</script>
+<!-- End reveal.js init -->
+
+<!-- Fontawesome -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    //$("a[href*='youtube.com/']").prepend( $( "<i class='fa fa-youtube-play'>&nbsp;</i>" ) );
+    //$("a[href*='vimeo.com/']").prepend( $( "<i class='fa fa-vimeo-square'>&nbsp;</i>" ) );
+    //$("a[href$='/download']").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    //$("a.download").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    $("a.external").append( $( "<i class='fa fa-external-link'></i>" ) );
+    $("a.twitter").append( $( "<i class='fa fa-twitter'></i>" ) );
+    $("a.github").append( $( "<i class='fa fa-github'></i>" ) );
+    $("blockquote").prepend( $( "<i class='fa fa-quote-left'></i>" ) );
+    $("a.button.lighter").click( function() { $("html.dark").removeClass("dark").addClass("light"); });
+    $("a.button.darker").click( function() { $("html.light").removeClass("light").addClass("dark"); });
+  });
+</script>
+<!-- End Fontawesome -->
+ 5  _includes/slide.html 
+@@ -0,0 +1,5 @@
+<section {% if post.slide-id %}id="{{post.slide-id}}"{%endif %} class="step{%if post.classes | size %}{% for class in post.classes %} {{class}}{% endfor %}{% else %} slide{% endif %}" {% unless site.simple-slideshow %}{% for attr in post.data %} data-{{attr[0]}}="{{attr[1]}}"{% endfor %}{% endunless %}>
+  {% if post.title != "" %}<h1>{{ post.title }}</h1>{% endif %}
+
+  {{ post.content }}
+</section> 
+ 15  _layouts/presentation.html 
+@@ -0,0 +1,15 @@
+<!DOCTYPE html>
+<html class="{% if site.solarized.theme %}{{site.solarized.theme}}{% else %}dark{% endif %}">
+<head>
+  {% include head.html %}
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			{{ content }}
+		</div>
+	</div>
+	{% include script.html %}
+</body>
+</html>
+
+ 12  _layouts/print.html 
+@@ -0,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div class="reveal">
+    {{ content }}
+  </div>
+</body>
+</html>
+
+ 14  _layouts/slide.html 
+@@ -0,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div class="reveal">
+    <div class="step">
+      {{ content }}
+    </div>
+  </div>
+</body>
+</html>
+
+ 6  _posts/0000-01-01-intro.md 
+@@ -0,0 +1,6 @@
+---
+layout: slide
+title: "Welcome to our slide deck!"
+---
+
+Use the right arrow to begin!
+ 16  _sass/fa/_bordered-pulled.scss 
+@@ -0,0 +1,16 @@
+// Bordered & Pulled
+// -------------------------
+
+.#{$fa-css-prefix}-border {
+  padding: .2em .25em .15em;
+  border: solid .08em $fa-border-color;
+  border-radius: .1em;
+}
+
+.pull-right { float: right; }
+.pull-left { float: left; }
+
+.#{$fa-css-prefix} {
+  &.pull-left { margin-right: .3em; }
+  &.pull-right { margin-left: .3em; }
+}
+ 12  _sass/fa/_core.scss 
+@@ -0,0 +1,12 @@
+// Base Class Definition
+// -------------------------
+
+.#{$fa-css-prefix} {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+ 6  _sass/fa/_fixed-width.scss 
+@@ -0,0 +1,6 @@
+// Fixed Width Icons
+// -------------------------
+.#{$fa-css-prefix}-fw {
+  width: (18em / 14);
+  text-align: center;
+}
+ 412  _sass/fa/_icons.scss 
+Large diffs are not rendered by default.
+
+ 13  _sass/fa/_larger.scss 
+@@ -0,0 +1,13 @@
+// Icon Sizes
+// -------------------------
+
+/* makes the font 33% larger relative to the icon container */
+.#{$fa-css-prefix}-lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -15%;
+}
+.#{$fa-css-prefix}-2x { font-size: 2em; }
+.#{$fa-css-prefix}-3x { font-size: 3em; }
+.#{$fa-css-prefix}-4x { font-size: 4em; }
+.#{$fa-css-prefix}-5x { font-size: 5em; }
+ 19  _sass/fa/_list.scss 
+@@ -0,0 +1,19 @@
+// List Icons
+// -------------------------
+
+.#{$fa-css-prefix}-ul {
+  padding-left: 0;
+  margin-left: $fa-li-width;
+  list-style-type: none;
+  > li { position: relative; }
+}
+.#{$fa-css-prefix}-li {
+  position: absolute;
+  left: -$fa-li-width;
+  width: $fa-li-width;
+  top: (2em / 14);
+  text-align: center;
+  &.#{$fa-css-prefix}-lg {
+    left: -$fa-li-width + (4em / 14);
+  }
+}
+ 20  _sass/fa/_mixins.scss 
+@@ -0,0 +1,20 @@
+// Mixins
+// --------------------------
+
+@mixin fa-icon-rotate($degrees, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=$rotation);
+  -webkit-transform: rotate($degrees);
+     -moz-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+       -o-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+
+@mixin fa-icon-flip($horiz, $vert, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=$rotation);
+  -webkit-transform: scale($horiz, $vert);
+     -moz-transform: scale($horiz, $vert);
+      -ms-transform: scale($horiz, $vert);
+       -o-transform: scale($horiz, $vert);
+          transform: scale($horiz, $vert);
+}
+ 14  _sass/fa/_path.scss 
+@@ -0,0 +1,14 @@
+/* FONT PATH
+ * -------------------------- */
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=#{$fa-version}');
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+    url('#{$fa-font-path}/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'),
+    url('#{$fa-font-path}/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
+    url('#{$fa-font-path}/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg');
+  //src: url('#{$fa-font-path}/FontAwesome.otf') format('opentype'); // used when developing fonts
+  font-weight: normal;
+  font-style: normal;
+}
+ 9  _sass/fa/_rotated-flipped.scss 
+@@ -0,0 +1,9 @@
+// Rotated & Flipped Icons
+// -------------------------
+
+.#{$fa-css-prefix}-rotate-90  { @include fa-icon-rotate(90deg, 1);  }
+.#{$fa-css-prefix}-rotate-180 { @include fa-icon-rotate(180deg, 2); }
+.#{$fa-css-prefix}-rotate-270 { @include fa-icon-rotate(270deg, 3); }
+
+.#{$fa-css-prefix}-flip-horizontal { @include fa-icon-flip(-1, 1, 0); }
+.#{$fa-css-prefix}-flip-vertical   { @include fa-icon-flip(1, -1, 2); }
+ 30  _sass/fa/_spinning.scss 
+@@ -0,0 +1,30 @@
+// Spinning Icons
+// --------------------------
+
+.#{$fa-css-prefix}-spin {
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+
+@-moz-keyframes spin {
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(359deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); }
+}
+@-o-keyframes spin {
+  0% { -o-transform: rotate(0deg); }
+  100% { -o-transform: rotate(359deg); }
+}
+@-ms-keyframes spin {
+  0% { -ms-transform: rotate(0deg); }
+  100% { -ms-transform: rotate(359deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}
+ 20  _sass/fa/_stacked.scss 
+@@ -0,0 +1,20 @@
+// Stacked Icons
+// -------------------------
+
+.#{$fa-css-prefix}-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.#{$fa-css-prefix}-stack-1x, .#{$fa-css-prefix}-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.#{$fa-css-prefix}-stack-1x { line-height: inherit; }
+.#{$fa-css-prefix}-stack-2x { font-size: 2em; }
+.#{$fa-css-prefix}-inverse { color: $fa-inverse; }
+ 381  _sass/fa/_variables.scss 
+@@ -0,0 +1,381 @@
+// Variables
+// --------------------------
+
+$fa-font-path:        "../fonts/FontAwesome" !default;
+//$fa-font-path:        "//netdna.bootstrapcdn.com/font-awesome/4.0.3/fonts" !default; // for referencing Bootstrap CDN font files directly
+$fa-css-prefix:       fa !default;
+$fa-version:          "4.0.3" !default;
+$fa-border-color:     #eee !default;
+$fa-inverse:          #fff !default;
+$fa-li-width:        (30em / 14) !default;
+
+$fa-var-glass: "\f000";
+$fa-var-music: "\f001";
+$fa-var-search: "\f002";
+$fa-var-envelope-o: "\f003";
+$fa-var-heart: "\f004";
+$fa-var-star: "\f005";
+$fa-var-star-o: "\f006";
+$fa-var-user: "\f007";
+$fa-var-film: "\f008";
+$fa-var-th-large: "\f009";
+$fa-var-th: "\f00a";
+$fa-var-th-list: "\f00b";
+$fa-var-check: "\f00c";
+$fa-var-times: "\f00d";
+$fa-var-search-plus: "\f00e";
+$fa-var-search-minus: "\f010";
+$fa-var-power-off: "\f011";
+$fa-var-signal: "\f012";
+$fa-var-cog: "\f013";
+$fa-var-trash-o: "\f014";
+$fa-var-home: "\f015";
+$fa-var-file-o: "\f016";
+$fa-var-clock-o: "\f017";
+$fa-var-road: "\f018";
+$fa-var-download: "\f019";
+$fa-var-arrow-circle-o-down: "\f01a";
+$fa-var-arrow-circle-o-up: "\f01b";
+$fa-var-inbox: "\f01c";
+$fa-var-play-circle-o: "\f01d";
+$fa-var-repeat: "\f01e";
+$fa-var-refresh: "\f021";
+$fa-var-list-alt: "\f022";
+$fa-var-lock: "\f023";
+$fa-var-flag: "\f024";
+$fa-var-headphones: "\f025";
+$fa-var-volume-off: "\f026";
+$fa-var-volume-down: "\f027";
+$fa-var-volume-up: "\f028";
+$fa-var-qrcode: "\f029";
+$fa-var-barcode: "\f02a";
+$fa-var-tag: "\f02b";
+$fa-var-tags: "\f02c";
+$fa-var-book: "\f02d";
+$fa-var-bookmark: "\f02e";
+$fa-var-print: "\f02f";
+$fa-var-camera: "\f030";
+$fa-var-font: "\f031";
+$fa-var-bold: "\f032";
+$fa-var-italic: "\f033";
+$fa-var-text-height: "\f034";
+$fa-var-text-width: "\f035";
+$fa-var-align-left: "\f036";
+$fa-var-align-center: "\f037";
+$fa-var-align-right: "\f038";
+$fa-var-align-justify: "\f039";
+$fa-var-list: "\f03a";
+$fa-var-outdent: "\f03b";
+$fa-var-indent: "\f03c";
+$fa-var-video-camera: "\f03d";
+$fa-var-picture-o: "\f03e";
+$fa-var-pencil: "\f040";
+$fa-var-map-marker: "\f041";
+$fa-var-adjust: "\f042";
+$fa-var-tint: "\f043";
+$fa-var-pencil-square-o: "\f044";
+$fa-var-share-square-o: "\f045";
+$fa-var-check-square-o: "\f046";
+$fa-var-arrows: "\f047";
+$fa-var-step-backward: "\f048";
+$fa-var-fast-backward: "\f049";
+$fa-var-backward: "\f04a";
+$fa-var-play: "\f04b";
+$fa-var-pause: "\f04c";
+$fa-var-stop: "\f04d";
+$fa-var-forward: "\f04e";
+$fa-var-fast-forward: "\f050";
+$fa-var-step-forward: "\f051";
+$fa-var-eject: "\f052";
+$fa-var-chevron-left: "\f053";
+$fa-var-chevron-right: "\f054";
+$fa-var-plus-circle: "\f055";
+$fa-var-minus-circle: "\f056";
+$fa-var-times-circle: "\f057";
+$fa-var-check-circle: "\f058";
+$fa-var-question-circle: "\f059";
+$fa-var-info-circle: "\f05a";
+$fa-var-crosshairs: "\f05b";
+$fa-var-times-circle-o: "\f05c";
+$fa-var-check-circle-o: "\f05d";
+$fa-var-ban: "\f05e";
+$fa-var-arrow-left: "\f060";
+$fa-var-arrow-right: "\f061";
+$fa-var-arrow-up: "\f062";
+$fa-var-arrow-down: "\f063";
+$fa-var-share: "\f064";
+$fa-var-expand: "\f065";
+$fa-var-compress: "\f066";
+$fa-var-plus: "\f067";
+$fa-var-minus: "\f068";
+$fa-var-asterisk: "\f069";
+$fa-var-exclamation-circle: "\f06a";
+$fa-var-gift: "\f06b";
+$fa-var-leaf: "\f06c";
+$fa-var-fire: "\f06d";
+$fa-var-eye: "\f06e";
+$fa-var-eye-slash: "\f070";
+$fa-var-exclamation-triangle: "\f071";
+$fa-var-plane: "\f072";
+$fa-var-calendar: "\f073";
+$fa-var-random: "\f074";
+$fa-var-comment: "\f075";
+$fa-var-magnet: "\f076";
+$fa-var-chevron-up: "\f077";
+$fa-var-chevron-down: "\f078";
+$fa-var-retweet: "\f079";
+$fa-var-shopping-cart: "\f07a";
+$fa-var-folder: "\f07b";
+$fa-var-folder-open: "\f07c";
+$fa-var-arrows-v: "\f07d";
+$fa-var-arrows-h: "\f07e";
+$fa-var-bar-chart-o: "\f080";
+$fa-var-twitter-square: "\f081";
+$fa-var-facebook-square: "\f082";
+$fa-var-camera-retro: "\f083";
+$fa-var-key: "\f084";
+$fa-var-cogs: "\f085";
+$fa-var-comments: "\f086";
+$fa-var-thumbs-o-up: "\f087";
+$fa-var-thumbs-o-down: "\f088";
+$fa-var-star-half: "\f089";
+$fa-var-heart-o: "\f08a";
+$fa-var-sign-out: "\f08b";
+$fa-var-linkedin-square: "\f08c";
+$fa-var-thumb-tack: "\f08d";
+$fa-var-external-link: "\f08e";
+$fa-var-sign-in: "\f090";
+$fa-var-trophy: "\f091";
+$fa-var-github-square: "\f092";
+$fa-var-upload: "\f093";
+$fa-var-lemon-o: "\f094";
+$fa-var-phone: "\f095";
+$fa-var-square-o: "\f096";
+$fa-var-bookmark-o: "\f097";
+$fa-var-phone-square: "\f098";
+$fa-var-twitter: "\f099";
+$fa-var-facebook: "\f09a";
+$fa-var-github: "\f09b";
+$fa-var-unlock: "\f09c";
+$fa-var-credit-card: "\f09d";
+$fa-var-rss: "\f09e";
+$fa-var-hdd-o: "\f0a0";
+$fa-var-bullhorn: "\f0a1";
+$fa-var-bell: "\f0f3";
+$fa-var-certificate: "\f0a3";
+$fa-var-hand-o-right: "\f0a4";
+$fa-var-hand-o-left: "\f0a5";
+$fa-var-hand-o-up: "\f0a6";
+$fa-var-hand-o-down: "\f0a7";
+$fa-var-arrow-circle-left: "\f0a8";
+$fa-var-arrow-circle-right: "\f0a9";
+$fa-var-arrow-circle-up: "\f0aa";
+$fa-var-arrow-circle-down: "\f0ab";
+$fa-var-globe: "\f0ac";
+$fa-var-wrench: "\f0ad";
+$fa-var-tasks: "\f0ae";
+$fa-var-filter: "\f0b0";
+$fa-var-briefcase: "\f0b1";
+$fa-var-arrows-alt: "\f0b2";
+$fa-var-users: "\f0c0";
+$fa-var-link: "\f0c1";
+$fa-var-cloud: "\f0c2";
+$fa-var-flask: "\f0c3";
+$fa-var-scissors: "\f0c4";
+$fa-var-files-o: "\f0c5";
+$fa-var-paperclip: "\f0c6";
+$fa-var-floppy-o: "\f0c7";
+$fa-var-square: "\f0c8";
+$fa-var-bars: "\f0c9";
+$fa-var-list-ul: "\f0ca";
+$fa-var-list-ol: "\f0cb";
+$fa-var-strikethrough: "\f0cc";
+$fa-var-underline: "\f0cd";
+$fa-var-table: "\f0ce";
+$fa-var-magic: "\f0d0";
+$fa-var-truck: "\f0d1";
+$fa-var-pinterest: "\f0d2";
+$fa-var-pinterest-square: "\f0d3";
+$fa-var-google-plus-square: "\f0d4";
+$fa-var-google-plus: "\f0d5";
+$fa-var-money: "\f0d6";
+$fa-var-caret-down: "\f0d7";
+$fa-var-caret-up: "\f0d8";
+$fa-var-caret-left: "\f0d9";
+$fa-var-caret-right: "\f0da";
+$fa-var-columns: "\f0db";
+$fa-var-sort: "\f0dc";
+$fa-var-sort-asc: "\f0dd";
+$fa-var-sort-desc: "\f0de";
+$fa-var-envelope: "\f0e0";
+$fa-var-linkedin: "\f0e1";
+$fa-var-undo: "\f0e2";
+$fa-var-gavel: "\f0e3";
+$fa-var-tachometer: "\f0e4";
+$fa-var-comment-o: "\f0e5";
+$fa-var-comments-o: "\f0e6";
+$fa-var-bolt: "\f0e7";
+$fa-var-sitemap: "\f0e8";
+$fa-var-umbrella: "\f0e9";
+$fa-var-clipboard: "\f0ea";
+$fa-var-lightbulb-o: "\f0eb";
+$fa-var-exchange: "\f0ec";
+$fa-var-cloud-download: "\f0ed";
+$fa-var-cloud-upload: "\f0ee";
+$fa-var-user-md: "\f0f0";
+$fa-var-stethoscope: "\f0f1";
+$fa-var-suitcase: "\f0f2";
+$fa-var-bell-o: "\f0a2";
+$fa-var-coffee: "\f0f4";
+$fa-var-cutlery: "\f0f5";
+$fa-var-file-text-o: "\f0f6";
+$fa-var-building-o: "\f0f7";
+$fa-var-hospital-o: "\f0f8";
+$fa-var-ambulance: "\f0f9";
+$fa-var-medkit: "\f0fa";
+$fa-var-fighter-jet: "\f0fb";
+$fa-var-beer: "\f0fc";
+$fa-var-h-square: "\f0fd";
+$fa-var-plus-square: "\f0fe";
+$fa-var-angle-double-left: "\f100";
+$fa-var-angle-double-right: "\f101";
+$fa-var-angle-double-up: "\f102";
+$fa-var-angle-double-down: "\f103";
+$fa-var-angle-left: "\f104";
+$fa-var-angle-right: "\f105";
+$fa-var-angle-up: "\f106";
+$fa-var-angle-down: "\f107";
+$fa-var-desktop: "\f108";
+$fa-var-laptop: "\f109";
+$fa-var-tablet: "\f10a";
+$fa-var-mobile: "\f10b";
+$fa-var-circle-o: "\f10c";
+$fa-var-quote-left: "\f10d";
+$fa-var-quote-right: "\f10e";
+$fa-var-spinner: "\f110";
+$fa-var-circle: "\f111";
+$fa-var-reply: "\f112";
+$fa-var-github-alt: "\f113";
+$fa-var-folder-o: "\f114";
+$fa-var-folder-open-o: "\f115";
+$fa-var-smile-o: "\f118";
+$fa-var-frown-o: "\f119";
+$fa-var-meh-o: "\f11a";
+$fa-var-gamepad: "\f11b";
+$fa-var-keyboard-o: "\f11c";
+$fa-var-flag-o: "\f11d";
+$fa-var-flag-checkered: "\f11e";
+$fa-var-terminal: "\f120";
+$fa-var-code: "\f121";
+$fa-var-reply-all: "\f122";
+$fa-var-mail-reply-all: "\f122";
+$fa-var-star-half-o: "\f123";
+$fa-var-location-arrow: "\f124";
+$fa-var-crop: "\f125";
+$fa-var-code-fork: "\f126";
+$fa-var-chain-broken: "\f127";
+$fa-var-question: "\f128";
+$fa-var-info: "\f129";
+$fa-var-exclamation: "\f12a";
+$fa-var-superscript: "\f12b";
+$fa-var-subscript: "\f12c";
+$fa-var-eraser: "\f12d";
+$fa-var-puzzle-piece: "\f12e";
+$fa-var-microphone: "\f130";
+$fa-var-microphone-slash: "\f131";
+$fa-var-shield: "\f132";
+$fa-var-calendar-o: "\f133";
+$fa-var-fire-extinguisher: "\f134";
+$fa-var-rocket: "\f135";
+$fa-var-maxcdn: "\f136";
+$fa-var-chevron-circle-left: "\f137";
+$fa-var-chevron-circle-right: "\f138";
+$fa-var-chevron-circle-up: "\f139";
+$fa-var-chevron-circle-down: "\f13a";
+$fa-var-html5: "\f13b";
+$fa-var-css3: "\f13c";
+$fa-var-anchor: "\f13d";
+$fa-var-unlock-alt: "\f13e";
+$fa-var-bullseye: "\f140";
+$fa-var-ellipsis-h: "\f141";
+$fa-var-ellipsis-v: "\f142";
+$fa-var-rss-square: "\f143";
+$fa-var-play-circle: "\f144";
+$fa-var-ticket: "\f145";
+$fa-var-minus-square: "\f146";
+$fa-var-minus-square-o: "\f147";
+$fa-var-level-up: "\f148";
+$fa-var-level-down: "\f149";
+$fa-var-check-square: "\f14a";
+$fa-var-pencil-square: "\f14b";
+$fa-var-external-link-square: "\f14c";
+$fa-var-share-square: "\f14d";
+$fa-var-compass: "\f14e";
+$fa-var-caret-square-o-down: "\f150";
+$fa-var-caret-square-o-up: "\f151";
+$fa-var-caret-square-o-right: "\f152";
+$fa-var-eur: "\f153";
+$fa-var-gbp: "\f154";
+$fa-var-usd: "\f155";
+$fa-var-inr: "\f156";
+$fa-var-jpy: "\f157";
+$fa-var-rub: "\f158";
+$fa-var-krw: "\f159";
+$fa-var-btc: "\f15a";
+$fa-var-file: "\f15b";
+$fa-var-file-text: "\f15c";
+$fa-var-sort-alpha-asc: "\f15d";
+$fa-var-sort-alpha-desc: "\f15e";
+$fa-var-sort-amount-asc: "\f160";
+$fa-var-sort-amount-desc: "\f161";
+$fa-var-sort-numeric-asc: "\f162";
+$fa-var-sort-numeric-desc: "\f163";
+$fa-var-thumbs-up: "\f164";
+$fa-var-thumbs-down: "\f165";
+$fa-var-youtube-square: "\f166";
+$fa-var-youtube: "\f167";
+$fa-var-xing: "\f168";
+$fa-var-xing-square: "\f169";
+$fa-var-youtube-play: "\f16a";
+$fa-var-dropbox: "\f16b";
+$fa-var-stack-overflow: "\f16c";
+$fa-var-instagram: "\f16d";
+$fa-var-flickr: "\f16e";
+$fa-var-adn: "\f170";
+$fa-var-bitbucket: "\f171";
+$fa-var-bitbucket-square: "\f172";
+$fa-var-tumblr: "\f173";
+$fa-var-tumblr-square: "\f174";
+$fa-var-long-arrow-down: "\f175";
+$fa-var-long-arrow-up: "\f176";
+$fa-var-long-arrow-left: "\f177";
+$fa-var-long-arrow-right: "\f178";
+$fa-var-apple: "\f179";
+$fa-var-windows: "\f17a";
+$fa-var-android: "\f17b";
+$fa-var-linux: "\f17c";
+$fa-var-dribbble: "\f17d";
+$fa-var-skype: "\f17e";
+$fa-var-foursquare: "\f180";
+$fa-var-trello: "\f181";
+$fa-var-female: "\f182";
+$fa-var-male: "\f183";
+$fa-var-gittip: "\f184";
+$fa-var-sun-o: "\f185";
+$fa-var-moon-o: "\f186";
+$fa-var-archive: "\f187";
+$fa-var-bug: "\f188";
+$fa-var-vk: "\f189";
+$fa-var-weibo: "\f18a";
+$fa-var-renren: "\f18b";
+$fa-var-pagelines: "\f18c";
+$fa-var-stack-exchange: "\f18d";
+$fa-var-arrow-circle-o-right: "\f18e";
+$fa-var-arrow-circle-o-left: "\f190";
+$fa-var-caret-square-o-left: "\f191";
+$fa-var-dot-circle-o: "\f192";
+$fa-var-wheelchair: "\f193";
+$fa-var-vimeo-square: "\f194";
+$fa-var-try: "\f195";
+$fa-var-plus-square-o: "\f196";
+
+ 17  _sass/fa/font-awesome.scss 
+@@ -0,0 +1,17 @@
+/*!
+ *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+
+@import "variables";
+@import "mixins";
+@import "path";
+@import "core";
+@import "larger";
+@import "fixed-width";
+@import "list";
+@import "bordered-pulled";
+@import "spinning";
+@import "rotated-flipped";
+@import "stacked";
+@import "icons";
+ 9  _sass/fonts.scss 
+@@ -0,0 +1,9 @@
+// opensans
+@import url('../fonts/OpenSans/opensans.css');
+// droidserif
+@import url('../fonts/droid-serif/web-fonts/droidserif_bold_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_bolditalic_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_italic_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_regular_macroman/stylesheet.css');
+// FontAwesome
+@import 'fa/font-awesome';
+ 6  _sass/mixin.scss 
+@@ -0,0 +1,6 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+} 
+ 365  _sass/solarized/solarized.scss 
+@@ -0,0 +1,365 @@
+/**
+ * based on Solarized Dark theme for reveal.js by Achim Staebler
+ * and Solarized colors by Ethan Schoonover
+ * http://ethanschoonover.com/solarized
+ * remixed by: Thomas Friese
+ * http://tasmo.rocks/
+**/
+
+// ---------------------------------------------
+// Main Variables
+// Solarized base colors
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+
+// Background of the presentation
+$backgroundColor: $base03;
+
+// Primary/body text
+$mainFont: 'Open Sans', Arial, sans-serif;
+$mainFontWeight: 400;
+$mainFontSize: 2rem;
+$mainColor: $base1;
+
+// Vertical spacing between blocks of text
+$blockMargin: 20px;
+
+// Headings
+$headingMargin: .5em 0;
+$headingFont: 'open_sanslight' ,'Open Sans', Arial, sans-serif;
+$headingColor: $base2;
+$headingLineHeight: 1em;
+$headingLetterSpacing: 0.02rem;
+$headingTextTransform: none;
+$headingTextShadow: 0px 0px 2px rgba( $headingColor, .5 );
+$headingFontWeight: $mainFontWeight + 400;
+$heading1TextShadow: $headingTextShadow;
+
+$heading1Size: 5rem;
+$heading2Size: 4rem;
+$heading3Size: 3rem;
+$heading4Size: 2.00rem;
+
+// Links and actions
+$linkColor: $blue;
+$linkColorHover: lighten( $linkColor, 20% );
+
+// Text selection
+$selectionBackgroundColor: $magenta;
+$selectionColor: $base3;
+
+// Generates the presentation background, can be overridden
+// to return a background image or gradient
+@mixin bodyBackground() {
+	background: $backgroundColor;
+}
+
+$headerFont: $headingFont;
+$captionFont: $mainFont;
+$codeFont: 'Source Code Pro', 'Inconsolata', monospace;
+$codeFontSize: $mainFontSize - .5rem;
+$altFont: serif;
+$italicFont: 'open_sanslight_italic', 'Open Sans', Arial, sans-serif;
+$quoteFont: 'droid_serifitalic', cursive;
+
+// reveal.js theme
+@import "../../reveal.js/css/reveal";
+// Theme template ------------------------------
+@import "../../reveal.js/css/theme/template/theme";
+// ---------------------------------------------
+@import "../mixin";
+@import "../fonts";
+@import "syntax/syntax_solarized";
+// ---------------------------------------------
+@mixin rebase( $rebase03,$rebase02,$rebase01,$rebase00,$rebase0,$rebase1,$rebase2,$rebase3 )
+{
+  background-color: $rebase03;
+  color: $rebase1;
+  //* { color: $rebase1; }
+  body {
+    background-color: $rebase03;
+  }
+  .reveal {
+    background-color: $rebase03;
+    color: $rebase1;
+    text-shadow: 0 0 1px rgba( $rebase1, .2 );
+    -webkit-text-stroke: 1px rgba( $rebase1, .2 );
+    h1,h2,h3,h4,h5,h6 {
+      color: $rebase2;
+      border-color: $rebase0;
+      text-shadow: $headingTextShadow;
+      a {
+        &:not( .image ), &:active, &:visited {
+          color: $rebase2;
+        }
+        &:hover {
+          color: $linkColorHover;
+        }
+      }
+    }
+    a {
+      &:not( .image ), &:active, &:visited {
+        color: $linkColor;
+      }
+      &:hover {
+        color: $linkColorHover;
+      }
+    }
+    h1,h2,h3,h4,h5,h6,p,li {
+      >code, >a>code {
+        background: $rebase1;
+        color: $rebase03;
+        border: 1px solid $rebase1;
+      }
+    }
+    section img {
+      border: 4px solid $rebase1;
+    }
+    figure.highlight {
+      background: $rebase3;
+    }
+  }
+}
+@mixin accentize( $accent ) {
+  a#sitelink{ background-color: $accent; }
+  a, a:active, a:visited, code.url { color: $accent; }
+  h1 { color: $accent }
+  h2,h3,h4,h5,h6 { color: $accent }
+  h1#pagetitle, h1:first-of-type { color: $accent; }
+}
+
+/* dark is default mode, so pair with general html definition */
+.light { @include rebase( $base3,$base2,$base1,$base0,$base00,$base01,$base02,$base03 ) }
+.dark { @include rebase( $base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3 ) }
+html * {
+  color-profile: sRGB;
+  -webkit-font-smoothing: antialiased;
+  font-smooth: always;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+.reveal {
+  font-weight: $mainFontWeight;
+  font-kerning: normal;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  p,
+  ul {
+    text-align: left;
+    font-weight: $mainFontWeight;
+  }
+  h1,h2,h3,h4,h5,h6,p,li {
+    >code, >a>code {
+      font-size: $mainFontSize;
+      @include border-radius( 0.15em );
+      padding: 0 0.3em;
+    }
+  }
+  pre {
+    box-shadow: none;
+    margin: 0;
+    width: unset;
+  }
+  pre,code {
+    font-family: $codeFont;
+    font-size: $codeFontSize;
+    font-weight: normal;
+  }
+  pre code {
+    padding: 0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  figure.highlight {
+    width: 90%;
+    margin: .5em auto;
+    padding: .7em 1em .8em;
+    text-shadow: none;
+    box-shadow: 0px 0px 6px rgba( 0,0,0,0.3 );
+    @include border-radius( 0.4em );
+  }
+  blockquote {
+    background: inherit;
+    box-shadow: none;
+    font-family: $quoteFont;
+    font-size: 2.8rem;
+    font-style: normal;
+    font-weight: 100;
+    padding-left: 3em;
+    i.fa {
+      position:absolute;
+      font-size:2em;
+      font-style: italic;
+      line-height:1;
+      left:-.1em;
+      top:-.1em;
+    }
+    code {
+      font-size: 1.1em;
+    }
+  }
+  p > img,
+  .image {
+    display: block;
+    text-align: center;
+  }
+  iframe,
+  img {
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  }
+  .slides>section,
+  .slides>section>section {
+    padding: 0;
+  }
+  .slides>section {
+    >h1:first-child {
+      margin-top: 0;
+    }
+    &[data-background="black"] {
+      h1,h2,h3,h4,h5,h6 {
+        color: $base2;
+      }
+    }
+    .fragment.highlight-red,
+    .fragment.highlight-current-red,
+    .fragment.highlight-green,
+    .fragment.highlight-current-green,
+    .fragment.highlight-blue,
+    .fragment.highlight-current-blue {
+      opacity: 1;
+    }
+    .fragment.highlight-red.visible,
+    .fragment.highlight-current-red.current-fragment {
+      * {
+        color: $red;
+        text-shadow: 0 0 1px rgba( $red, .2 );
+        -webkit-text-stroke: 1px rgba( $red, .2 );
+      }
+      color: $red;
+      text-shadow: 0 0 1px rgba( $red, .2 );
+      -webkit-text-stroke: 1px rgba( $red, .2 );
+    }
+    .fragment.highlight-green.visible,
+    .fragment.highlight-current-green.current-fragment {
+      * {
+        color: $green;
+        text-shadow: 0 0 1px rgba( $green, .2 );
+        -webkit-text-stroke: 1px rgba( $green, .2 );
+      }
+      color: $green;
+      text-shadow: 0 0 1px rgba( $green, .2 );
+      -webkit-text-stroke: 1px rgba( $green, .2 );
+    }
+    .fragment.highlight-blue.visible,
+    .fragment.highlight-current-blue.current-fragment {
+      * {
+        color: $blue;
+        text-shadow: 0 0 1px rgba( $blue, .2 );
+        -webkit-text-stroke: 1px rgba( $blue, .2 );
+      }
+      color: $blue;
+      text-shadow: 0 0 1px rgba( $blue, .2 );
+      -webkit-text-stroke: 1px rgba( $blue, .2 );
+    }
+  }
+  // Fontawesome
+  .fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 35%;
+    font-style: normal;
+    font-weight: 200;
+    vertical-align: super;
+    line-height: 1;
+    padding-left: 0.2em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .fa-twitter, .fa-github {
+    font-size: 100%;
+  }
+  // accentize
+  .slides>section.yellow, .yellow{
+    @include accentize( $yellow );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color:$yellow;
+      text-shadow: 0 0 1px rgba( $yellow, .2 );
+      -webkit-text-stroke: 1px rgba( $yellow, .2 );
+    }
+  }
+  .slides>section.orange, .orange {
+    @include accentize( $orange );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $orange;
+      text-shadow: 0 0 1px rgba( $orange, .2 );
+      -webkit-text-stroke: 1px rgba( $orange, .2 );
+    }
+  }
+  .slides>section.red, .red {
+    @include accentize( $red );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $red;
+      text-shadow: 0 0 1px rgba( $red, .2 );
+      -webkit-text-stroke: 1px rgba( $red, .2 );
+    }
+  }
+  .slides>section.magenta, .magenta {
+    @include accentize( $magenta );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $magenta;
+      text-shadow: 0 0 1px rgba( $magenta, .2 );
+      -webkit-text-stroke: 1px rgba( $magenta, .2 );
+    }
+  }
+  .slides>section.violet, .violet {
+    @include accentize( $violet );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $violet;
+      text-shadow: 0 0 1px rgba( $violet, .2 );
+      -webkit-text-stroke: 1px rgba( $violet, .2 );
+    }
+  }
+  .slides>section.blue, .blue {
+    @include accentize( $blue );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color:$blue;
+      text-shadow: 0 0 1px rgba( $blue, .2 );
+      -webkit-text-stroke: 1px rgba( $blue, .2 );
+    }
+  }
+  .slides>section.cyan, .cyan {
+    @include accentize( $cyan );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $cyan;
+      text-shadow: 0 0 1px rgba( $cyan, .2 );
+      -webkit-text-stroke: 1px rgba( $cyan, .2 );
+    }
+  }
+  .slides>section.green, .green {
+    @include accentize( $green );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $green;
+      text-shadow: 0 0 1px rgba( $green, .2 );
+      -webkit-text-stroke: 1px rgba( $green, .2 );
+    }
+  }
+}
+ 98  _sass/solarized/syntax/syntax_solarized.scss 
+@@ -0,0 +1,98 @@
+/**
+ * Solarized syntax
+ * for use with Jekyll and Pygments
+ * based on Solarized Dark theme for reveal.js by Achim Staebler
+ * and Solarized colors by Ethan Schoonover
+ * http://ethanschoonover.com/solarized
+ * remixed by: Thomas Friese
+ * http://tasmo.rocks/
+**/
+@mixin syntax( $sybase03,$sybase02,$sybase01,$sybase00,$sybase0,$sybase1,$sybase2,$sybase3,$syyellow,$syorange,$syred,$symagenta,$syviolet,$syblue,$sycyan,$sygreen )
+{
+  .reveal pre {
+    background-color: $sybase03; color: $sybase1;
+    code a {
+      &:not( .image ), &:active, &:visited {
+        color: $sybase1;
+      }
+      &:hover {
+        color: lighten( $sybase1, 20% );
+      }
+    }
+  }
+  .reveal pre code {
+  	.lineno { color: $sybase01 } // Line Numbers
+  	.c { color: $sybase01 } /* Comment */
+  	.err { color: $sybase1 } /* Error */
+  	.g { color: $sybase1 } /* Generic */
+  	.k { color: $sygreen } /* Keyword */
+  	.l { color: $sybase1 } /* Literal */
+  	.n { color: $sybase1 } /* Name */
+  	.o { color: $sygreen } /* Operator */
+  	.x { color: $syorange } /* Other */
+  	.p { color: $sybase1 } /* Punctuation */
+  	.cm { color: $sybase01 } /* Comment.Multiline */
+  	.cp { color: $sygreen } /* Comment.Preproc */
+  	.c1 { color: $sybase01 } /* Comment.Single */
+  	.cs { color: $sygreen } /* Comment.Special */
+  	.gd { color: $sycyan } /* Generic.Deleted */
+  	.ge { color: $sybase1; font-style: italic } /* Generic.Emph */
+  	.gr { color: $syred } /* Generic.Error */
+  	.gh { color: $syorange } /* Generic.Heading */
+  	.gi { color: $sygreen } /* Generic.Inserted */
+  	.go { color: $sybase1 } /* Generic.Output */
+  	.gp { color: $sybase1 } /* Generic.Prompt */
+  	.gs { color: $sybase1; font-weight: bold } /* Generic.Strong */
+  	.gu { color: $syorange } /* Generic.Subheading */
+  	.gt { color: $sybase1 } /* Generic.Traceback */
+  	.kc { color: $syorange } /* Keyword.Constant */
+  	.kd { color: $syblue } /* Keyword.Declaration */
+  	.kn { color: $sygreen } /* Keyword.Namespace */
+  	.kp { color: $sygreen } /* Keyword.Pseudo */
+  	.kr { color: $syblue } /* Keyword.Reserved */
+  	.kt { color: $syred } /* Keyword.Type */
+  	.ld { color: $sybase1 } /* Literal.Date */
+  	.m { color: $sycyan } /* Literal.Number */
+  	.s { color: $sycyan } /* Literal.String */
+  	.na { color: $sybase1 } /* Name.Attribute */
+  	.nb { color: $syyellow } /* Name.Builtin */
+  	.nc { color: $syblue } /* Name.Class */
+  	.no { color: $syorange } /* Name.Constant */
+  	.nd { color: $syblue } /* Name.Decorator */
+  	.ni { color: $syorange } /* Name.Entity */
+  	.ne { color: $syorange } /* Name.Exception */
+  	.nf { color: $syblue } /* Name.Function */
+  	.nl { color: $sybase1 } /* Name.Label */
+  	.nn { color: $sybase1 } /* Name.Namespace */
+  	.nx { color: $sybase1 } /* Name.Other */
+  	.py { color: $sybase1 } /* Name.Property */
+  	.nt { color: $syblue } /* Name.Tag */
+  	.nv { color: $syblue } /* Name.Variable */
+  	.ow { color: $sygreen } /* Operator.Word */
+  	.w { color: $sybase1 } /* Text.Whitespace */
+  	.mf { color: $sycyan } /* Literal.Number.Float */
+  	.mh { color: $sycyan } /* Literal.Number.Hex */
+  	.mi { color: $sycyan } /* Literal.Number.Integer */
+  	.mo { color: $sycyan } /* Literal.Number.Oct */
+  	.sb { color: $sybase01 } /* Literal.String.Backtick */
+  	.sc { color: $sycyan } /* Literal.String.Char */
+  	.sd { color: $sybase1 } /* Literal.String.Doc */
+  	.s2 { color: $sycyan } /* Literal.String.Double */
+  	.se { color: $syorange } /* Literal.String.Escape */
+  	.sh { color: $sybase1 } /* Literal.String.Heredoc */
+  	.si { color: $sycyan } /* Literal.String.Interpol */
+  	.sx { color: $sycyan } /* Literal.String.Other */
+  	.sr { color: $syred } /* Literal.String.Regex */
+  	.s1 { color: $sycyan } /* Literal.String.Single */
+  	.ss { color: $sycyan } /* Literal.String.Symbol */
+  	.bp { color: $syblue } /* Name.Builtin.Pseudo */
+  	.vc { color: $syblue } /* Name.Variable.Class */
+  	.vg { color: $syblue } /* Name.Variable.Global */
+  	.vi { color: $syblue } /* Name.Variable.Instance */
+  	.il { color: $sycyan } /* Literal.Number.Integer.Long */
+  }
+}
+// dark syntax for light layout
+.light { @include syntax( $base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3,$yellow,$orange,$red,$magenta,$violet,$blue,$cyan,$green ) }
+// light syntax for dark layout
+.dark { @include syntax( $base3,$base2,$base1,$base0,$base00,$base01,$base02,$base03,$yellow,$orange,$red,$magenta,$violet,$blue,$cyan,$green ) }
+ 6  assets/css/style.scss 
+@@ -0,0 +1,6 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+@import "solarized/solarized.scss";
+ BIN +61.4 KB assets/fonts/FontAwesome/FontAwesome.otf 
+Binary file not shown.
+ BIN +37.3 KB assets/fonts/FontAwesome/fontawesome-webfont.eot 
+Binary file not shown.
+ 414  assets/fonts/FontAwesome/fontawesome-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +78.8 KB assets/fonts/FontAwesome/fontawesome-webfont.ttf 
+Binary file not shown.
+ BIN +43.4 KB assets/fonts/FontAwesome/fontawesome-webfont.woff 
+Binary file not shown.
+ BIN +19.1 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Bold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.6 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.ttf 
+Binary file not shown.
+ BIN +21.9 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.woff 
+Binary file not shown.
+ BIN +19.7 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +38.2 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +22.5 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.woff 
+Binary file not shown.
+ BIN +20.4 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +41 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.ttf 
+Binary file not shown.
+ BIN +23.2 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.woff 
+Binary file not shown.
+ BIN +21.1 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +42.4 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +24 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.woff 
+Binary file not shown.
+ BIN +19.8 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Italic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.5 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.ttf 
+Binary file not shown.
+ BIN +22.6 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.woff 
+Binary file not shown.
+ BIN +19.1 KB assets/fonts/OpenSans/OpenSans-Light-webfont.eot 
+Binary file not shown.
+ 1,831  assets/fonts/OpenSans/OpenSans-Light-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +36.5 KB assets/fonts/OpenSans/OpenSans-Light-webfont.ttf 
+Binary file not shown.
+ BIN +21.7 KB assets/fonts/OpenSans/OpenSans-Light-webfont.woff 
+Binary file not shown.
+ BIN +20.1 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.eot 
+Binary file not shown.
+ 1,835  assets/fonts/OpenSans/OpenSans-LightItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +39 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.ttf 
+Binary file not shown.
+ BIN +22.9 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.woff 
+Binary file not shown.
+ BIN +19.4 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.eot 
+Binary file not shown.
+ 1,831  assets/fonts/OpenSans/OpenSans-Regular-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.3 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.ttf 
+Binary file not shown.
+ BIN +22.1 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.woff 
+Binary file not shown.
+ BIN +19.6 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Semibold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +38.6 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.ttf 
+Binary file not shown.
+ BIN +22.4 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.woff 
+Binary file not shown.
+ BIN +20.5 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +39.3 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +23.2 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.woff 
+Binary file not shown.
+ 110  assets/fonts/OpenSans/opensans.css 
+@@ -0,0 +1,110 @@
+// OpenSans
+@font-face {
+	font-family: 'open_sansbold';
+	src: url('OpenSans-Bold-webfont.eot');
+	src: url('OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Bold-webfont.woff') format('woff'),
+		 url('OpenSans-Bold-webfont.ttf') format('truetype'),
+		 url('OpenSans-Bold-webfont.svg#open_sansbold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansbold_italic';
+	src: url('OpenSans-BoldItalic-webfont.eot');
+	src: url('OpenSans-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-BoldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-BoldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-BoldItalic-webfont.svg#open_sansbold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansextrabold';
+	src: url('OpenSans-ExtraBold-webfont.eot');
+	src: url('OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-ExtraBold-webfont.woff') format('woff'),
+		 url('OpenSans-ExtraBold-webfont.ttf') format('truetype'),
+		 url('OpenSans-ExtraBold-webfont.svg#open_sansextrabold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansextrabold_italic';
+	src: url('OpenSans-ExtraBoldItalic-webfont.eot');
+	src: url('OpenSans-ExtraBoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-ExtraBoldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-ExtraBoldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-ExtraBoldItalic-webfont.svg#open_sansextrabold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansitalic';
+	src: url('OpenSans-Italic-webfont.eot');
+	src: url('OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Italic-webfont.woff') format('woff'),
+		 url('OpenSans-Italic-webfont.ttf') format('truetype'),
+		 url('OpenSans-Italic-webfont.svg#open_sansitalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanslight';
+	src: url('OpenSans-Light-webfont.eot');
+	src: url('OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Light-webfont.woff') format('woff'),
+		 url('OpenSans-Light-webfont.ttf') format('truetype'),
+		 url('OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanslight_italic';
+	src: url('OpenSans-LightItalic-webfont.eot');
+	src: url('OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-LightItalic-webfont.woff') format('woff'),
+		 url('OpenSans-LightItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-LightItalic-webfont.svg#open_sanslight_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansregular';
+	src: url('OpenSans-Regular-webfont.eot');
+	src: url('OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Regular-webfont.woff') format('woff'),
+		 url('OpenSans-Regular-webfont.ttf') format('truetype'),
+		 url('OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanssemibold';
+	src: url('OpenSans-Semibold-webfont.eot');
+	src: url('OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Semibold-webfont.woff') format('woff'),
+		 url('OpenSans-Semibold-webfont.ttf') format('truetype'),
+		 url('OpenSans-Semibold-webfont.svg#open_sanssemibold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanssemibold_italic';
+	src: url('OpenSans-SemiboldItalic-webfont.eot');
+	src: url('OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-SemiboldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-SemiboldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-SemiboldItalic-webfont.svg#open_sanssemibold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+ 201  assets/fonts/droid-serif/Apache License.txt 
+@@ -0,0 +1,201 @@
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 230  assets/fonts/droid-serif/How_to_use_webfonts.html 
+@@ -0,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" charset="utf-8" />
+
+	<style type="text/css" media="screen">
+		/*-- RESET ------*/
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, font, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center, dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend, table, 
+		caption, tbody, tfoot, thead, tr, th, td 
+		                  {margin: 0;padding: 0;border: 0;outline: 0;
+		                  font-size: 100%;vertical-align: baseline;
+		                  background: transparent;}
+		body              {line-height: 1;}
+		ol, ul            {list-style: none;}
+		blockquote, q     {quotes: none;}
+		blockquote:before, blockquote:after,
+		q:before, q:after {content: '';	content: none;}
+		:focus            {outline: 0;}
+		ins               {text-decoration: none;}
+		del               {text-decoration: line-through;}
+		table             {border-collapse: collapse;border-spacing: 0;}
+
+		/*-- GRID -----*/
+		.section {margin-bottom: 18px;
+		}
+		.section:after	{content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+		.section 		{*zoom: 1;}
+
+		.section .firstcolumn,
+		.section .firstcol {margin-left: 0;}
+
+		.grid1, .grid1_2cols, .grid1_3cols, .grid1_4cols, .grid2, .grid2_3cols, .grid2_4cols, .grid3, .grid3_2cols, .grid3_4cols, .grid4, .grid4_3cols, .grid5, .grid5_2cols, .grid5_3cols, .grid5_4cols, .grid6, .grid6_4cols, .grid7, .grid7_2cols, .grid7_3cols, .grid7_4cols, .grid8, .grid8_3cols, .grid9, .grid9_2cols, .grid9_4cols, .grid10, .grid10_3cols, .grid10_4cols, .grid11, .grid11_2cols, .grid11_3cols, .grid11_4cols, .grid12
+		{margin-left: 15px;float: left;display: inline; overflow: hidden;}
+		.width5, .grid5, .span-5 {width: 335px;}
+		.width5_2cols,.grid5_2cols {width: 160px;}
+		.width5_3cols,.grid5_3cols  {width: 101px;}
+		.width5_4cols,.grid5_4cols  {width: 72px;}
+		.input_width5 {width: 329px;}
+
+		.width6, .grid6, .span-6 {width: 405px;}
+		.width6_4cols,.grid6_4cols  {width: 90px;}
+		.input_width6 {width: 399px;}
+
+		.width7, .grid7, .span-7 {width: 475px;}
+		.width7_2cols,.grid7_2cols {width: 230px;}
+		.width7_3cols,.grid7_3cols  {width: 148px;}
+		.width7_4cols,.grid7_4cols  {width: 107px;}
+		.input_width7 {width: 469px;}
+
+		/*-- STYLES -----*/
+		body {
+			color: #000;
+			background-color: #dcdcdc;
+			font: 13px Arial, sans-serif;
+		}
+
+		a {
+			text-decoration: none;
+			color: #1883ba;
+		}
+
+		h1{
+			font-size: 32px;
+			font-weight: normal;
+			font-style: normal;
+			margin-bottom: 18px;
+		}
+
+		h2{
+			font-size: 18px;
+		}
+
+		#container {
+			width: 865px;
+			margin: 0px auto;
+		}
+
+
+
+		#header {
+			height:109px;
+			font-size: 36px;
+			background-color: #000;
+			color: #fff;
+			text-indent:-9999px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASoAAABtCAMAAAAhztx9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADBQTFRFzen3mNLwDCc17fj8GVRwUbXlLprOrNzyesbrEjtOZb3oJXulP63iAAAA////MqfgopnD5wAABSNJREFUeNrs2u1yqyAQBmBARATU+7/bo6CRTwMp7ZnJvPurjUbrU1gWkGyIyiAgABWoQAUqUIEKASpQgQpUoAIVAlSgAhWoQAUqxJdSCbYsHFQ1MS/Lr1h9IRU7qBZQVVNpUL0PDao2K1BVJ/ZjKORdyb6SSiwLc0VDT6uvohKcMS72H/gyn0VDx7Lhq6hsM2LiyFZ6404KrSobzuawWoQ4pRhyVZnKdj7b/djMO1btX0V197m9UbHe5cJ3jYB7Wj873TwL1FUVw+CR1DEHrMT6jct+59Ke1qD6nwGqn1HpTATJQPN9rGGcR+1caC1y17oOPl/XSDoRQiiV4/2ZumMML6zKh4z/UXLUfTX+iNL93hOl6dmPVGxJwkuUevY+5yJc/WAiLQvZvTSSxnXeSNY7hul6gnUNPvaecA0PEek99/4Bvc8b4qc/vhDQ0qF0l59QiTk6osOFIvYZFQ2ffM1S7UFMnmr1RSKqdTCPVHKIb9KFSqTHeEB1TCvaqWKpItVttZatYqr42UMqmt6jjYqHoQNF96vQ0YpQbqn2RSWuS7kdlStc77NPeuaoUVHiU+3Zy8Vk//uT97w0PERKVK8vZaik07luLvebN1I9zLK8OYPDEcFvoVXaJ3W6oTLF/0qTe+jN2Hw25pqGOS6xyhLVKktUo0Wm4ajQgUokPUz7XfDqY6KV6vhzTe6GIdVmhvv3ODcPd+PJUK2qQDUlkM0jYL4KjiHOdhZR+cNgFVUxP0RUfvOLqeh9KEflD4PeV8ekTXWimjMLsF6XOxDmqOH1pZJlKlWmIiQYOzdyf5VmBsguVGmjCvi0zfjhqNiXSn1GZRMSyVGRJOf3odK5HW6vmLJU0TZcda6SP6SSD1Sun00ZqiFKYz2p2Fsqt1WiW0fAdRrfU9EyFSmndXKWBDKhMvFVPqFifvAHKnE/+Unlii/RQGWGc3ay11DKPFB5HnHJ/VAskPO/caX2m+o4c/gpVa5W59lttZTKlvTnMFhFdVY3V7EsS1Q0X1cZJW3FdeXnHJX1OU8Iqcj/pPJnOHVU8Yw1N0UxzoMUJzavDpalMvcwWKC6Z1H076i8yrSS6pxTkCG0UuWJXlkqT+Va7vQLVNVpXeSoXGWqm6iupOO3HVVePkjmuOP2TOXSGS3nql+nSkfAV7l1WDVTnY805qgGb5T0p8vRkF+gcqlOFkfA0V6LdKNaKqm2M7V/QGUfRaUrC1SV5rw0zM4lqmsYfKyraBeqqmo96JjsI6rp9deq8gzNpzJhDVukOofBx2q9E1XFHDBe6PuEirZS2T57T+XKVNaUPM4BO1FVrCzw6Oyfd8Aaqm3wTyxT3QVccWWhE1XFehWPGdupxjCtV1HJpwVjEo8ZT+tVnagqVkF53GFrqILZn927IVsbVZB0lJ+A4nqchlTJKmgvqvdr6wGVYHVUZJikm/sZ5ZbJZSuV8pY6g2opmbqQ9WFt3U2RulC93bHhaY+toIrryWlrpdq8tmgz1zAVqNwKfdolvehC9XYfkL+tWiuo6NZONXqNka7BYg3JzM2f9gE7Ub3ZXU5qCV1DJQOradw+oHL1pcmtwZPMuPEwV2/ZXY7fUUhaln1nYc69s5B9aSE9S+cmy9S+saDCfSZVeokgefHAvt9gXpOUaXqdl1xhTN5ZGF/vLJimRRgEqEAFKlCBClQIUIEKVKACFahAhQAVqEAFKlCBCgEqUIEKVKACFQJUoAIVqEAFKgSoQAUqUIEKVKBCgApUfx3/BBgAeuw63hnBp0AAAAAASUVORK5CYII=) no-repeat left center;
+			background-color: #31a7e0;
+
+		}
+
+		#main_content {
+			background-color: #fff;
+			padding: 20px 20px 20px;
+		}
+
+
+		#footer p {
+			margin: 0;
+			padding-top: 10px;
+			padding-bottom: 50px;
+			color: #333;
+			font: 10px Arial, sans-serif;
+		}
+		code {
+			white-space: pre;
+			background-color: #eee;
+			display: block;
+			padding: 10px;
+			margin-bottom: 18px;
+			overflow: auto;
+		}
+
+		.box  { 
+		  padding: 18px; 
+		  margin-bottom: 18px; 
+		  background: #eee; 
+		}
+		.bottom,.last 	{margin-bottom:0 !important; padding-bottom:0 !important;}
+
+
+
+		p{
+			line-height: 1.2em;
+			margin-bottom: 18px;
+			font: 13px Arial, sans-serif;
+		}
+
+
+
+		h3{
+			font-size: 15px;
+			margin-top: 18px;
+		}
+
+		.sidebar p{
+			font-size: 12px;
+			line-height: 1.4em;
+		}
+
+	</style>
+
+<title>How to Use Webfonts</title>
+
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		Fontspring
+	</div>
+	<div id="main_content">
+			<div class="section">
+				<div class="grid7 firstcol">
+					<h1>Installing Webfonts</h1>
+
+					<p>Webfonts are supported by all major browser platforms but not all in the same way. There are currently four different font formats that must be included in order to target all browsers. This includes TTF, WOFF, EOT and SVG.</p>
+
+					<h2>1. Upload your webfonts</h2>
+					<p>You must upload your webfont kit to your website. They should be in or near the same directory as your CSS files.</p>
+
+					<h2>2. Include the webfont stylesheet</h2>
+					<p>A special CSS @font-face declaration helps the various browsers select the appropriate font it needs without causing you a bunch of headaches. Learn more about this syntax by reading the <a href="http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax">Fontspring blog post</a> about it. The code for it is as follows:</p>
+
+
+<code>
+@font-face{ 
+	font-family: 'MyWebFont';
+	src: url('WebFont.eot');
+	src: url('WebFont.eot?iefix') format('eot'),
+	     url('WebFont.woff') format('woff'),
+	     url('WebFont.ttf') format('truetype'),
+	     url('WebFont.svg#webfont') format('svg');
+}
+</code>
+	<p>We've already gone ahead and generated the code for you. All you have to do is link to the stylesheet in your HTML, like this:</p>
+	<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;stylesheet.css&quot; type=&quot;text/css&quot; charset=&quot;utf-8&quot; /&gt;</code>
+
+					<h2>3. Modify your own stylesheet</h2>
+					<p>To take advantage of your new fonts, you must tell your stylesheet to use them. Look at the original @font-face declaration above and find the property called "font-family." The name linked there will be what you use to reference the font. Prepend that webfont name to the font stack in the "font-family" property, inside the selector you want to change. For example:</p>
+<code>p { font-family: 'MyWebFont', Arial, sans-serif; }</code>
+
+<h2>4. Test</h2>
+<p>Getting webfonts to work cross-browser <em>can</em> be tricky. Use the information in the sidebar to help you if you find that fonts aren't loading in a particular browser.</p>
+				</div>
+
+				<div class="grid5 sidebar">
+					<div class="box">
+						<h2>Troubleshooting<br />Font-Face Problems</h2>
+						<p>Having trouble getting your webfonts to load in your new website? Here are some tips to sort out what might be the problem.</p>
+
+						<h3>Fonts not showing in any browser</h3>
+
+						<p>This sounds like you need to work on the plumbing. You either did not upload the fonts to the correct directory, or you did not link the fonts properly in the CSS. If you've confirmed that all this is correct and you still have a problem, take a look at your .htaccess file and see if requests are getting intercepted.</p>
+
+						<h3>Fonts not loading in iPhone or iPad</h3>
+
+						<p>The most common problem here is that you are serving the fonts from an IIS server. IIS refuses to serve files that have unknown MIME types. If that is the case, you must set the MIME type for SVG to "image/svg+xml" in the server settings. Follow these instructions from Microsoft if you need help.</p>
+
+						<h3>Fonts not loading in Firefox</h3>
+
+						<p>The primary reason for this failure? You are still using a version Firefox older than 3.5. So upgrade already! If that isn't it, then you are very likely serving fonts from a different domain. Firefox requires that all font assets be served from the same domain. Lastly it is possible that you need to add WOFF to your list of MIME types (if you are serving via IIS.)</p>
+
+						<h3>Fonts not loading in IE</h3>
+
+						<p>Are you looking at Internet Explorer on an actual Windows machine or are you cheating by using a service like Adobe BrowserLab? Many of these screenshot services do not render @font-face for IE. Best to test it on a real machine.</p>
+
+						<h3>Fonts not loading in IE9</h3>
+
+						<p>IE9, like Firefox, requires that fonts be served from the same domain as the website. Make sure that is the case.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+</body>
+</html>
+ 364  assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-demo.html 
+Large diffs are not rendered by default.
+
+ BIN +26.8 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.eot 
+Binary file not shown.
+ 1,455  ...onts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +59 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.ttf 
+Binary file not shown.
+ BIN +29.8 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.woff 
+Binary file not shown.
+ 11  assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/stylesheet.css 
+@@ -0,0 +1,11 @@
+@font-face {
+    font-family: 'droid_serifbold';
+    src: url('DroidSerif-Bold-webfont.eot');
+    src: url('DroidSerif-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSerif-Bold-webfont.woff') format('woff'),
+         url('DroidSerif-Bold-webfont.ttf') format('truetype'),
+         url('DroidSerif-Bold-webfont.svg#droid_serifbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+ 364  ...onts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-demo.html 
+Large diffs are not rendered by default.
+
+ BIN +29.9 KB ...ts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.eot 
+Binary file not shown.
+ 1,458  ...erif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +70.5 KB ...ts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +34.5 KB ...s/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.woff 
+Binary file not shown.
+ 12  assets/fonts/droid-serif/web-fonts/droidserif_bolditalic_macroman/stylesheet.css 
+@@ -0,0 +1,12 @@
+@font-face {
+    font-family: 'droid_serifbold_italic';
+    src: url('DroidSerif-BoldItalic-webfont.eot');
+    src: url('DroidSerif-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSerif-BoldItalic-webfont.woff') format('woff'),
+         url('DroidSerif-BoldItalic-webfont.ttf') format('truetype'),
+         url('DroidSerif-BoldItalic-webfont.svg#droid_serifbold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+ 364  assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-demo.html 
+Large diffs are not rendered by default.
+
+ BIN +23.7 KB assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.eot 
+Binary file not shown.
+ 1,458  .../droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +53.9 KB assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.ttf
+				]
+			})
+      @@ -0,0 +1,20 @@
+# EditorConfig is awesome: http://EditorConfig.org
+root = false
+
+[*]
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = false
+charset = utf-8
+
+[*.{json,js,css,scss,yml,htm,html}]
+indent_style = space
+indent_size = 2
+
+[*.{md,mdown,markdown}]
+trim_trailing_whitespace = false
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+ 4  .gitignore 
+@@ -0,0 +1,4 @@
+_site/
+.sass-cache/
+.jekyll-metadata
+.bundle
+ 3  .gitmodules 
+@@ -0,0 +1,3 @@
+[submodule "reveal.js"]
+	path = reveal.js
+	url = https://github.com/hakimel/reveal.js.git
+ 5  Gemfile 
+@@ -0,0 +1,5 @@
+source "https://rubygems.org"
+
+gem 'github-pages'
+gem 'html-proofer'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+ 217  Gemfile.lock 
+@@ -0,0 +1,217 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.2.8)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
+    colorator (1.1.0)
+    colored (1.2)
+    ethon (0.10.1)
+      ffi (>= 1.3.0)
+    execjs (2.7.0)
+    faraday (0.12.2)
+      multipart-post (>= 1.2, < 3)
+    ffi (1.9.18)
+    forwardable-extended (2.6.0)
+    gemoji (3.0.0)
+    github-pages (148)
+      activesupport (= 4.2.8)
+      github-pages-health-check (= 1.3.5)
+      jekyll (= 3.5.1)
+      jekyll-avatar (= 0.4.2)
+      jekyll-coffeescript (= 1.0.1)
+      jekyll-default-layout (= 0.1.4)
+      jekyll-feed (= 0.9.2)
+      jekyll-gist (= 1.4.1)
+      jekyll-github-metadata (= 2.6.0)
+      jekyll-mentions (= 1.2.0)
+      jekyll-optional-front-matter (= 0.2.0)
+      jekyll-paginate (= 1.1.0)
+      jekyll-readme-index (= 0.1.0)
+      jekyll-redirect-from (= 0.12.1)
+      jekyll-relative-links (= 0.4.1)
+      jekyll-sass-converter (= 1.5.0)
+      jekyll-seo-tag (= 2.2.3)
+      jekyll-sitemap (= 1.0.0)
+      jekyll-swiss (= 0.4.0)
+      jekyll-theme-architect (= 0.0.4)
+      jekyll-theme-cayman (= 0.0.4)
+      jekyll-theme-dinky (= 0.0.4)
+      jekyll-theme-hacker (= 0.0.4)
+      jekyll-theme-leap-day (= 0.0.4)
+      jekyll-theme-merlot (= 0.0.4)
+      jekyll-theme-midnight (= 0.0.4)
+      jekyll-theme-minimal (= 0.0.4)
+      jekyll-theme-modernist (= 0.0.4)
+      jekyll-theme-primer (= 0.3.1)
+      jekyll-theme-slate (= 0.0.4)
+      jekyll-theme-tactile (= 0.0.4)
+      jekyll-theme-time-machine (= 0.0.4)
+      jekyll-titles-from-headings (= 0.3.0)
+      jemoji (= 0.8.0)
+      kramdown (= 1.13.2)
+      liquid (= 4.0.0)
+      listen (= 3.0.6)
+      mercenary (~> 0.3)
+      minima (= 2.1.1)
+      rouge (= 1.11.1)
+      terminal-table (~> 1.4)
+    github-pages-health-check (1.3.5)
+      addressable (~> 2.3)
+      net-dns (~> 0.8)
+      octokit (~> 4.0)
+      public_suffix (~> 2.0)
+      typhoeus (~> 0.7)
+    html-pipeline (2.6.0)
+      activesupport (>= 2)
+      nokogiri (>= 1.4)
+    html-proofer (3.7.2)
+      activesupport (>= 4.2, < 6.0)
+      addressable (~> 2.3)
+      colored (~> 1.2)
+      mercenary (~> 0.3.2)
+      nokogiri (~> 1.7)
+      parallel (~> 1.3)
+      typhoeus (~> 0.7)
+      yell (~> 2.0)
+    i18n (0.8.6)
+    jekyll (3.5.1)
+      addressable (~> 2.4)
+      colorator (~> 1.0)
+      jekyll-sass-converter (~> 1.0)
+      jekyll-watch (~> 1.1)
+      kramdown (~> 1.3)
+      liquid (~> 4.0)
+      mercenary (~> 0.3.3)
+      pathutil (~> 0.9)
+      rouge (~> 1.7)
+      safe_yaml (~> 1.0)
+    jekyll-avatar (0.4.2)
+      jekyll (~> 3.0)
+    jekyll-coffeescript (1.0.1)
+      coffee-script (~> 2.2)
+    jekyll-default-layout (0.1.4)
+      jekyll (~> 3.0)
+    jekyll-feed (0.9.2)
+      jekyll (~> 3.3)
+    jekyll-gist (1.4.1)
+      octokit (~> 4.2)
+    jekyll-github-metadata (2.6.0)
+      jekyll (~> 3.1)
+      octokit (~> 4.0, != 4.4.0)
+    jekyll-mentions (1.2.0)
+      activesupport (~> 4.0)
+      html-pipeline (~> 2.3)
+      jekyll (~> 3.0)
+    jekyll-optional-front-matter (0.2.0)
+      jekyll (~> 3.0)
+    jekyll-paginate (1.1.0)
+    jekyll-readme-index (0.1.0)
+      jekyll (~> 3.0)
+    jekyll-redirect-from (0.12.1)
+      jekyll (~> 3.3)
+    jekyll-relative-links (0.4.1)
+      jekyll (~> 3.3)
+    jekyll-sass-converter (1.5.0)
+      sass (~> 3.4)
+    jekyll-seo-tag (2.2.3)
+      jekyll (~> 3.3)
+    jekyll-sitemap (1.0.0)
+      jekyll (~> 3.3)
+    jekyll-swiss (0.4.0)
+    jekyll-theme-architect (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-cayman (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-dinky (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-hacker (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-leap-day (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-merlot (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-midnight (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-minimal (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-modernist (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-primer (0.3.1)
+      jekyll (~> 3.3)
+    jekyll-theme-slate (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-tactile (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-theme-time-machine (0.0.4)
+      jekyll (~> 3.3)
+    jekyll-titles-from-headings (0.3.0)
+      jekyll (~> 3.3)
+    jekyll-watch (1.5.0)
+      listen (~> 3.0, < 3.1)
+    jemoji (0.8.0)
+      activesupport (~> 4.0)
+      gemoji (~> 3.0)
+      html-pipeline (~> 2.2)
+      jekyll (>= 3.0)
+    kramdown (1.13.2)
+    liquid (4.0.0)
+    listen (3.0.6)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9.7)
+    mercenary (0.3.6)
+    mini_portile2 (2.3.0)
+    minima (2.1.1)
+      jekyll (~> 3.3)
+    minitest (5.10.3)
+    multipart-post (2.0.0)
+    net-dns (0.8.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
+    octokit (4.7.0)
+      sawyer (~> 0.8.0, >= 0.5.3)
+    parallel (1.12.0)
+    pathutil (0.14.0)
+      forwardable-extended (~> 2.6)
+    public_suffix (2.0.5)
+    rb-fsevent (0.10.2)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    rouge (1.11.1)
+    safe_yaml (1.0.4)
+    sass (3.5.1)
+      sass-listen (~> 4.0.0)
+    sass-listen (4.0.0)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+    sawyer (0.8.1)
+      addressable (>= 2.3.5, < 2.6)
+      faraday (~> 0.8, < 1.0)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
+    thread_safe (0.3.6)
+    typhoeus (0.8.0)
+      ethon (>= 0.8.0)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
+    unicode-display_width (1.3.0)
+    yell (2.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  github-pages
+  html-proofer
+  tzinfo-data
+
+BUNDLED WITH
+   1.16.1
+ 21  LICENSE 
+@@ -0,0 +1,21 @@
+(MIT License)
+
+Copyright (C) 2016 Thomas Friese, http://tasmo.rocks
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+ 5  README.md 
+@@ -0,0 +1,5 @@
+# Caption this
+
+This repository hosts a Markdown-driven slideshow. Let the bot show you around. But if you want to know more, keep reading!
+
+If you're using [GitHub Pages](https://help.github.com/articles/what-is-github-pages/), files inside the `_posts` folder will be rendered on the web page. They must be named with the pattern `####-##-##-description.md`. The contents of the file must contain [YAML front-matter](https://jekyllrb.com/docs/frontmatter/).
+ 116  _config.yml 
+@@ -0,0 +1,116 @@
+timezone:    Europe/Berlin
+future:      false
+# Set baseurl to the base path of the site eg "/mytalk"
+baseurl:     "/caption-this"
+# The allowed values are 'rouge', 'pygments' or null.
+highlighter: rouge
+# markdown - Valid options are [ maruku | rdiscount | kramdown | redcarpet ]
+markdown:    kramdown
+lsi:         false
+permalink:   "/:title"
+
+kramdown:
+  ## for german: "sbquo,lsquo,bdquo,ldquo"
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+plugins:
+  - jemoji
+
+## personalize your slide show
+title:       caption-this
+author:      GitHubTeacher
+description: A fun activity for learning Git and GitHub.
+
+sass:
+  style:     :compressed
+
+## solarized variant (dark/light)
+solarized:
+  theme:     dark
+
+slideNumber:
+  # Slide number formatting can be configured using these variables:
+  #  "h.v":  horizontal . vertical slide number (default)
+  #  "h/v":  horizontal / vertical slide number
+  #    "c":  flattened slide number
+  #  "c/t":  flattened slide number / total slides
+  # "none":  dont't show slide numbers
+  format:    "c/t"
+
+## Reveal.initialize
+## At the end of your page Jekyll initializes reveal by running the following code. Note that all config values are optional and will default as specified below.
+## Note that the new default vertical centering option will break compatibility with slides that were using transitions with backgrounds ("cube" and "page"). To restore the previous behavior, set "center" to "false".
+reveal:
+  ## Display controls in the bottom right corner
+  controls: false
+  ## Display a presentation progress bar
+  progress: true
+  ## Display the page number of the current slide
+  #slideNumber: false
+  ## Push each slide change to the browser history
+  history: true
+  ## Enable keyboard shortcuts for navigation
+  keyboard: true
+  ## Enable the slide overview mode
+  overview: true
+  ## Vertical centering of slides
+  center: true
+  ## Enables touch navigation on devices with touch input
+  touch: true
+  ## Loop the presentation
+  loop: false
+  ## Change the presentation direction to be RTL
+  #rtl: false
+  ## Turns fragments on and off globally
+  fragments: true
+  ## Flags if the presentation is running in an embedded mode
+  ## i.e. contained within a limited portion of the screen
+  #embedded: false
+  ## Number of milliseconds between automatically proceeding to the
+  ## next slide, disabled when set to 0, this value can be overwritten
+  ## by using a data-autoslide attribute on your slides
+  #autoSlide: 0
+  ## Stop auto-sliding after user input
+  #autoSlideStoppable: true
+  ## Enable slide navigation via mouse wheel
+  #mouseWheel: false
+  ## Hides the address bar on mobile devices
+  #hideAddressBar: true
+  ## Opens links in an iframe preview overlay
+  #previewLinks: false
+  ## Transition style (default/cube/page/concave/zoom/linear/fade/none)
+  transition: linear
+  ## Transition speed (default/fast/slow)
+  #transitionSpeed: default
+  ## Transition style for full page slide backgrounds (default/none/slide/concave/convex/zoom)
+  backgroundTransition: slide
+  ## Number of slides away from the current that are visible
+  #viewDistance: 3
+  ## Parallax background image (e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  #parallaxBackgroundImage: ''
+  ## Parallax background size (CSS syntax, e.g. "2100px 900px")
+  #parallaxBackgroundSize: ''
+  ## The "normal" size of the presentation, aspect ratio will be preserved
+  ## when the presentation is scaled to fit different resolutions. Can be
+  ## specified using percentage units.
+  width: 1000
+  height: 920
+  ## Factor of the display size that should remain empty around the content
+  margin: 0.1
+  ## Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2
+  maxScale: 1.5
+
+exclude: [
+  "Gemfile",
+  "Gemfile.lock",
+  "vendor",
+  "reveal.js/test",
+  "reveal.js/index.html",
+  "reveal.js/README.md",
+  "reveal.js/bower.json",
+  "reveal.js/Gruntfile.js",
+  "reveal.js/CONTRIBUTING.md",
+  "reveal.js/LICENSE",
+  "reveal.js/package.json"
+]
+ 30  _includes/head.html 
+@@ -0,0 +1,30 @@
+<meta charset="utf-8">
+
+<title>{% if post.title %}{{ post.title }} | {{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+<meta name="author" content="{{ site.author }}">
+<meta name="description" content="{{ site.description }}">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+<!-- jQuery -->
+<script src="{{ site.baseurl }}/assets/js/jquery-1.11.1.min.js"></script>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+	if( window.location.search.match( /print-pdf/gi ) ) {
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = '{{ site.baseurl }}/reveal.js/css/print/pdf.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	}
+</script>
+
+<!--[if lt IE 9]>
+<script src="{{ site.baseurl }}/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+ 60  _includes/script.html 
+@@ -0,0 +1,60 @@
+<script src="{{ site.baseurl }}/reveal.js/lib/js/head.min.js"></script>
+<script src="{{ site.baseurl }}/reveal.js/js/reveal.js"></script>
+
+<!-- reveal.js init -->
+<script>
+  var baseUrl = "{{ site.baseurl }}"
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    {% if site.reveal %}
+    {% for attr in site.reveal %}{{attr[0]}}: {% unless {attr[1]} == false or {attr[1]} == true or {attr[0]} == "width" or {attr[0]} == "height" %}'{{attr[1]}}',{% else %}{{attr[1]}},{% endunless %}
+    {% endfor %}
+    {% endif %}
+
+    theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+    transition: Reveal.getQueryHash().transition || {% if site.reveal.transition %}'{{ site.reveal.transition }}',{% else %}'default',{% endif %} // default/cube/page/concave/zoom/linear/fade/none
+
+    // Optional libraries used to extend on reveal.js
+    dependencies: [
+      // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+      { src: baseUrl + '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+      // Zoom in and out with Alt+click
+      { src: baseUrl + '/reveal.js/plugin/zoom-js/zoom.js', async: true },
+
+      // Speaker notes
+      { src: baseUrl + '/reveal.js/plugin/notes/notes.js', async: true },
+
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: baseUrl + '/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } },
+
+      // MathJax
+      { src: baseUrl + '/reveal.js/plugin/math/math.js', async: true }
+    ]
+  });
+
+  {% if site.slideNumber.format and site.slideNumber.format != "none" %}
+  // Shows the slide number using default formatting
+  Reveal.configure({ slideNumber: true });
+  Reveal.configure({ slideNumber: '{{ site.slideNumber.format }}' });
+  {% endif %}
+</script>
+<!-- End reveal.js init -->
+
+<!-- Fontawesome -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    //$("a[href*='youtube.com/']").prepend( $( "<i class='fa fa-youtube-play'>&nbsp;</i>" ) );
+    //$("a[href*='vimeo.com/']").prepend( $( "<i class='fa fa-vimeo-square'>&nbsp;</i>" ) );
+    //$("a[href$='/download']").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    //$("a.download").prepend( $( "<i class='fa fa-cloud-download'>&nbsp;</i>" ) );
+    $("a.external").append( $( "<i class='fa fa-external-link'></i>" ) );
+    $("a.twitter").append( $( "<i class='fa fa-twitter'></i>" ) );
+    $("a.github").append( $( "<i class='fa fa-github'></i>" ) );
+    $("blockquote").prepend( $( "<i class='fa fa-quote-left'></i>" ) );
+    $("a.button.lighter").click( function() { $("html.dark").removeClass("dark").addClass("light"); });
+    $("a.button.darker").click( function() { $("html.light").removeClass("light").addClass("dark"); });
+  });
+</script>
+<!-- End Fontawesome -->
+ 5  _includes/slide.html 
+@@ -0,0 +1,5 @@
+<section {% if post.slide-id %}id="{{post.slide-id}}"{%endif %} class="step{%if post.classes | size %}{% for class in post.classes %} {{class}}{% endfor %}{% else %} slide{% endif %}" {% unless site.simple-slideshow %}{% for attr in post.data %} data-{{attr[0]}}="{{attr[1]}}"{% endfor %}{% endunless %}>
+  {% if post.title != "" %}<h1>{{ post.title }}</h1>{% endif %}
+
+  {{ post.content }}
+</section> 
+ 15  _layouts/presentation.html 
+@@ -0,0 +1,15 @@
+<!DOCTYPE html>
+<html class="{% if site.solarized.theme %}{{site.solarized.theme}}{% else %}dark{% endif %}">
+<head>
+  {% include head.html %}
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			{{ content }}
+		</div>
+	</div>
+	{% include script.html %}
+</body>
+</html>
+
+ 12  _layouts/print.html 
+@@ -0,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div class="reveal">
+    {{ content }}
+  </div>
+</body>
+</html>
+
+ 14  _layouts/slide.html 
+@@ -0,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div class="reveal">
+    <div class="step">
+      {{ content }}
+    </div>
+  </div>
+</body>
+</html>
+
+ 6  _posts/0000-01-01-intro.md 
+@@ -0,0 +1,6 @@
+---
+layout: slide
+title: "Welcome to our slide deck!"
+---
+
+Use the right arrow to begin!
+ 16  _sass/fa/_bordered-pulled.scss 
+@@ -0,0 +1,16 @@
+// Bordered & Pulled
+// -------------------------
+
+.#{$fa-css-prefix}-border {
+  padding: .2em .25em .15em;
+  border: solid .08em $fa-border-color;
+  border-radius: .1em;
+}
+
+.pull-right { float: right; }
+.pull-left { float: left; }
+
+.#{$fa-css-prefix} {
+  &.pull-left { margin-right: .3em; }
+  &.pull-right { margin-left: .3em; }
+}
+ 12  _sass/fa/_core.scss 
+@@ -0,0 +1,12 @@
+// Base Class Definition
+// -------------------------
+
+.#{$fa-css-prefix} {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+ 6  _sass/fa/_fixed-width.scss 
+@@ -0,0 +1,6 @@
+// Fixed Width Icons
+// -------------------------
+.#{$fa-css-prefix}-fw {
+  width: (18em / 14);
+  text-align: center;
+}
+ 412  _sass/fa/_icons.scss 
+Large diffs are not rendered by default.
+
+ 13  _sass/fa/_larger.scss 
+@@ -0,0 +1,13 @@
+// Icon Sizes
+// -------------------------
+
+/* makes the font 33% larger relative to the icon container */
+.#{$fa-css-prefix}-lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -15%;
+}
+.#{$fa-css-prefix}-2x { font-size: 2em; }
+.#{$fa-css-prefix}-3x { font-size: 3em; }
+.#{$fa-css-prefix}-4x { font-size: 4em; }
+.#{$fa-css-prefix}-5x { font-size: 5em; }
+ 19  _sass/fa/_list.scss 
+@@ -0,0 +1,19 @@
+// List Icons
+// -------------------------
+
+.#{$fa-css-prefix}-ul {
+  padding-left: 0;
+  margin-left: $fa-li-width;
+  list-style-type: none;
+  > li { position: relative; }
+}
+.#{$fa-css-prefix}-li {
+  position: absolute;
+  left: -$fa-li-width;
+  width: $fa-li-width;
+  top: (2em / 14);
+  text-align: center;
+  &.#{$fa-css-prefix}-lg {
+    left: -$fa-li-width + (4em / 14);
+  }
+}
+ 20  _sass/fa/_mixins.scss 
+@@ -0,0 +1,20 @@
+// Mixins
+// --------------------------
+
+@mixin fa-icon-rotate($degrees, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=$rotation);
+  -webkit-transform: rotate($degrees);
+     -moz-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+       -o-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+
+@mixin fa-icon-flip($horiz, $vert, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=$rotation);
+  -webkit-transform: scale($horiz, $vert);
+     -moz-transform: scale($horiz, $vert);
+      -ms-transform: scale($horiz, $vert);
+       -o-transform: scale($horiz, $vert);
+          transform: scale($horiz, $vert);
+}
+ 14  _sass/fa/_path.scss 
+@@ -0,0 +1,14 @@
+/* FONT PATH
+ * -------------------------- */
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=#{$fa-version}');
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+    url('#{$fa-font-path}/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'),
+    url('#{$fa-font-path}/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
+    url('#{$fa-font-path}/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg');
+  //src: url('#{$fa-font-path}/FontAwesome.otf') format('opentype'); // used when developing fonts
+  font-weight: normal;
+  font-style: normal;
+}
+ 9  _sass/fa/_rotated-flipped.scss 
+@@ -0,0 +1,9 @@
+// Rotated & Flipped Icons
+// -------------------------
+
+.#{$fa-css-prefix}-rotate-90  { @include fa-icon-rotate(90deg, 1);  }
+.#{$fa-css-prefix}-rotate-180 { @include fa-icon-rotate(180deg, 2); }
+.#{$fa-css-prefix}-rotate-270 { @include fa-icon-rotate(270deg, 3); }
+
+.#{$fa-css-prefix}-flip-horizontal { @include fa-icon-flip(-1, 1, 0); }
+.#{$fa-css-prefix}-flip-vertical   { @include fa-icon-flip(1, -1, 2); }
+ 30  _sass/fa/_spinning.scss 
+@@ -0,0 +1,30 @@
+// Spinning Icons
+// --------------------------
+
+.#{$fa-css-prefix}-spin {
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+
+@-moz-keyframes spin {
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(359deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); }
+}
+@-o-keyframes spin {
+  0% { -o-transform: rotate(0deg); }
+  100% { -o-transform: rotate(359deg); }
+}
+@-ms-keyframes spin {
+  0% { -ms-transform: rotate(0deg); }
+  100% { -ms-transform: rotate(359deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}
+ 20  _sass/fa/_stacked.scss 
+@@ -0,0 +1,20 @@
+// Stacked Icons
+// -------------------------
+
+.#{$fa-css-prefix}-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.#{$fa-css-prefix}-stack-1x, .#{$fa-css-prefix}-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.#{$fa-css-prefix}-stack-1x { line-height: inherit; }
+.#{$fa-css-prefix}-stack-2x { font-size: 2em; }
+.#{$fa-css-prefix}-inverse { color: $fa-inverse; }
+ 381  _sass/fa/_variables.scss 
+@@ -0,0 +1,381 @@
+// Variables
+// --------------------------
+
+$fa-font-path:        "../fonts/FontAwesome" !default;
+//$fa-font-path:        "//netdna.bootstrapcdn.com/font-awesome/4.0.3/fonts" !default; // for referencing Bootstrap CDN font files directly
+$fa-css-prefix:       fa !default;
+$fa-version:          "4.0.3" !default;
+$fa-border-color:     #eee !default;
+$fa-inverse:          #fff !default;
+$fa-li-width:        (30em / 14) !default;
+
+$fa-var-glass: "\f000";
+$fa-var-music: "\f001";
+$fa-var-search: "\f002";
+$fa-var-envelope-o: "\f003";
+$fa-var-heart: "\f004";
+$fa-var-star: "\f005";
+$fa-var-star-o: "\f006";
+$fa-var-user: "\f007";
+$fa-var-film: "\f008";
+$fa-var-th-large: "\f009";
+$fa-var-th: "\f00a";
+$fa-var-th-list: "\f00b";
+$fa-var-check: "\f00c";
+$fa-var-times: "\f00d";
+$fa-var-search-plus: "\f00e";
+$fa-var-search-minus: "\f010";
+$fa-var-power-off: "\f011";
+$fa-var-signal: "\f012";
+$fa-var-cog: "\f013";
+$fa-var-trash-o: "\f014";
+$fa-var-home: "\f015";
+$fa-var-file-o: "\f016";
+$fa-var-clock-o: "\f017";
+$fa-var-road: "\f018";
+$fa-var-download: "\f019";
+$fa-var-arrow-circle-o-down: "\f01a";
+$fa-var-arrow-circle-o-up: "\f01b";
+$fa-var-inbox: "\f01c";
+$fa-var-play-circle-o: "\f01d";
+$fa-var-repeat: "\f01e";
+$fa-var-refresh: "\f021";
+$fa-var-list-alt: "\f022";
+$fa-var-lock: "\f023";
+$fa-var-flag: "\f024";
+$fa-var-headphones: "\f025";
+$fa-var-volume-off: "\f026";
+$fa-var-volume-down: "\f027";
+$fa-var-volume-up: "\f028";
+$fa-var-qrcode: "\f029";
+$fa-var-barcode: "\f02a";
+$fa-var-tag: "\f02b";
+$fa-var-tags: "\f02c";
+$fa-var-book: "\f02d";
+$fa-var-bookmark: "\f02e";
+$fa-var-print: "\f02f";
+$fa-var-camera: "\f030";
+$fa-var-font: "\f031";
+$fa-var-bold: "\f032";
+$fa-var-italic: "\f033";
+$fa-var-text-height: "\f034";
+$fa-var-text-width: "\f035";
+$fa-var-align-left: "\f036";
+$fa-var-align-center: "\f037";
+$fa-var-align-right: "\f038";
+$fa-var-align-justify: "\f039";
+$fa-var-list: "\f03a";
+$fa-var-outdent: "\f03b";
+$fa-var-indent: "\f03c";
+$fa-var-video-camera: "\f03d";
+$fa-var-picture-o: "\f03e";
+$fa-var-pencil: "\f040";
+$fa-var-map-marker: "\f041";
+$fa-var-adjust: "\f042";
+$fa-var-tint: "\f043";
+$fa-var-pencil-square-o: "\f044";
+$fa-var-share-square-o: "\f045";
+$fa-var-check-square-o: "\f046";
+$fa-var-arrows: "\f047";
+$fa-var-step-backward: "\f048";
+$fa-var-fast-backward: "\f049";
+$fa-var-backward: "\f04a";
+$fa-var-play: "\f04b";
+$fa-var-pause: "\f04c";
+$fa-var-stop: "\f04d";
+$fa-var-forward: "\f04e";
+$fa-var-fast-forward: "\f050";
+$fa-var-step-forward: "\f051";
+$fa-var-eject: "\f052";
+$fa-var-chevron-left: "\f053";
+$fa-var-chevron-right: "\f054";
+$fa-var-plus-circle: "\f055";
+$fa-var-minus-circle: "\f056";
+$fa-var-times-circle: "\f057";
+$fa-var-check-circle: "\f058";
+$fa-var-question-circle: "\f059";
+$fa-var-info-circle: "\f05a";
+$fa-var-crosshairs: "\f05b";
+$fa-var-times-circle-o: "\f05c";
+$fa-var-check-circle-o: "\f05d";
+$fa-var-ban: "\f05e";
+$fa-var-arrow-left: "\f060";
+$fa-var-arrow-right: "\f061";
+$fa-var-arrow-up: "\f062";
+$fa-var-arrow-down: "\f063";
+$fa-var-share: "\f064";
+$fa-var-expand: "\f065";
+$fa-var-compress: "\f066";
+$fa-var-plus: "\f067";
+$fa-var-minus: "\f068";
+$fa-var-asterisk: "\f069";
+$fa-var-exclamation-circle: "\f06a";
+$fa-var-gift: "\f06b";
+$fa-var-leaf: "\f06c";
+$fa-var-fire: "\f06d";
+$fa-var-eye: "\f06e";
+$fa-var-eye-slash: "\f070";
+$fa-var-exclamation-triangle: "\f071";
+$fa-var-plane: "\f072";
+$fa-var-calendar: "\f073";
+$fa-var-random: "\f074";
+$fa-var-comment: "\f075";
+$fa-var-magnet: "\f076";
+$fa-var-chevron-up: "\f077";
+$fa-var-chevron-down: "\f078";
+$fa-var-retweet: "\f079";
+$fa-var-shopping-cart: "\f07a";
+$fa-var-folder: "\f07b";
+$fa-var-folder-open: "\f07c";
+$fa-var-arrows-v: "\f07d";
+$fa-var-arrows-h: "\f07e";
+$fa-var-bar-chart-o: "\f080";
+$fa-var-twitter-square: "\f081";
+$fa-var-facebook-square: "\f082";
+$fa-var-camera-retro: "\f083";
+$fa-var-key: "\f084";
+$fa-var-cogs: "\f085";
+$fa-var-comments: "\f086";
+$fa-var-thumbs-o-up: "\f087";
+$fa-var-thumbs-o-down: "\f088";
+$fa-var-star-half: "\f089";
+$fa-var-heart-o: "\f08a";
+$fa-var-sign-out: "\f08b";
+$fa-var-linkedin-square: "\f08c";
+$fa-var-thumb-tack: "\f08d";
+$fa-var-external-link: "\f08e";
+$fa-var-sign-in: "\f090";
+$fa-var-trophy: "\f091";
+$fa-var-github-square: "\f092";
+$fa-var-upload: "\f093";
+$fa-var-lemon-o: "\f094";
+$fa-var-phone: "\f095";
+$fa-var-square-o: "\f096";
+$fa-var-bookmark-o: "\f097";
+$fa-var-phone-square: "\f098";
+$fa-var-twitter: "\f099";
+$fa-var-facebook: "\f09a";
+$fa-var-github: "\f09b";
+$fa-var-unlock: "\f09c";
+$fa-var-credit-card: "\f09d";
+$fa-var-rss: "\f09e";
+$fa-var-hdd-o: "\f0a0";
+$fa-var-bullhorn: "\f0a1";
+$fa-var-bell: "\f0f3";
+$fa-var-certificate: "\f0a3";
+$fa-var-hand-o-right: "\f0a4";
+$fa-var-hand-o-left: "\f0a5";
+$fa-var-hand-o-up: "\f0a6";
+$fa-var-hand-o-down: "\f0a7";
+$fa-var-arrow-circle-left: "\f0a8";
+$fa-var-arrow-circle-right: "\f0a9";
+$fa-var-arrow-circle-up: "\f0aa";
+$fa-var-arrow-circle-down: "\f0ab";
+$fa-var-globe: "\f0ac";
+$fa-var-wrench: "\f0ad";
+$fa-var-tasks: "\f0ae";
+$fa-var-filter: "\f0b0";
+$fa-var-briefcase: "\f0b1";
+$fa-var-arrows-alt: "\f0b2";
+$fa-var-users: "\f0c0";
+$fa-var-link: "\f0c1";
+$fa-var-cloud: "\f0c2";
+$fa-var-flask: "\f0c3";
+$fa-var-scissors: "\f0c4";
+$fa-var-files-o: "\f0c5";
+$fa-var-paperclip: "\f0c6";
+$fa-var-floppy-o: "\f0c7";
+$fa-var-square: "\f0c8";
+$fa-var-bars: "\f0c9";
+$fa-var-list-ul: "\f0ca";
+$fa-var-list-ol: "\f0cb";
+$fa-var-strikethrough: "\f0cc";
+$fa-var-underline: "\f0cd";
+$fa-var-table: "\f0ce";
+$fa-var-magic: "\f0d0";
+$fa-var-truck: "\f0d1";
+$fa-var-pinterest: "\f0d2";
+$fa-var-pinterest-square: "\f0d3";
+$fa-var-google-plus-square: "\f0d4";
+$fa-var-google-plus: "\f0d5";
+$fa-var-money: "\f0d6";
+$fa-var-caret-down: "\f0d7";
+$fa-var-caret-up: "\f0d8";
+$fa-var-caret-left: "\f0d9";
+$fa-var-caret-right: "\f0da";
+$fa-var-columns: "\f0db";
+$fa-var-sort: "\f0dc";
+$fa-var-sort-asc: "\f0dd";
+$fa-var-sort-desc: "\f0de";
+$fa-var-envelope: "\f0e0";
+$fa-var-linkedin: "\f0e1";
+$fa-var-undo: "\f0e2";
+$fa-var-gavel: "\f0e3";
+$fa-var-tachometer: "\f0e4";
+$fa-var-comment-o: "\f0e5";
+$fa-var-comments-o: "\f0e6";
+$fa-var-bolt: "\f0e7";
+$fa-var-sitemap: "\f0e8";
+$fa-var-umbrella: "\f0e9";
+$fa-var-clipboard: "\f0ea";
+$fa-var-lightbulb-o: "\f0eb";
+$fa-var-exchange: "\f0ec";
+$fa-var-cloud-download: "\f0ed";
+$fa-var-cloud-upload: "\f0ee";
+$fa-var-user-md: "\f0f0";
+$fa-var-stethoscope: "\f0f1";
+$fa-var-suitcase: "\f0f2";
+$fa-var-bell-o: "\f0a2";
+$fa-var-coffee: "\f0f4";
+$fa-var-cutlery: "\f0f5";
+$fa-var-file-text-o: "\f0f6";
+$fa-var-building-o: "\f0f7";
+$fa-var-hospital-o: "\f0f8";
+$fa-var-ambulance: "\f0f9";
+$fa-var-medkit: "\f0fa";
+$fa-var-fighter-jet: "\f0fb";
+$fa-var-beer: "\f0fc";
+$fa-var-h-square: "\f0fd";
+$fa-var-plus-square: "\f0fe";
+$fa-var-angle-double-left: "\f100";
+$fa-var-angle-double-right: "\f101";
+$fa-var-angle-double-up: "\f102";
+$fa-var-angle-double-down: "\f103";
+$fa-var-angle-left: "\f104";
+$fa-var-angle-right: "\f105";
+$fa-var-angle-up: "\f106";
+$fa-var-angle-down: "\f107";
+$fa-var-desktop: "\f108";
+$fa-var-laptop: "\f109";
+$fa-var-tablet: "\f10a";
+$fa-var-mobile: "\f10b";
+$fa-var-circle-o: "\f10c";
+$fa-var-quote-left: "\f10d";
+$fa-var-quote-right: "\f10e";
+$fa-var-spinner: "\f110";
+$fa-var-circle: "\f111";
+$fa-var-reply: "\f112";
+$fa-var-github-alt: "\f113";
+$fa-var-folder-o: "\f114";
+$fa-var-folder-open-o: "\f115";
+$fa-var-smile-o: "\f118";
+$fa-var-frown-o: "\f119";
+$fa-var-meh-o: "\f11a";
+$fa-var-gamepad: "\f11b";
+$fa-var-keyboard-o: "\f11c";
+$fa-var-flag-o: "\f11d";
+$fa-var-flag-checkered: "\f11e";
+$fa-var-terminal: "\f120";
+$fa-var-code: "\f121";
+$fa-var-reply-all: "\f122";
+$fa-var-mail-reply-all: "\f122";
+$fa-var-star-half-o: "\f123";
+$fa-var-location-arrow: "\f124";
+$fa-var-crop: "\f125";
+$fa-var-code-fork: "\f126";
+$fa-var-chain-broken: "\f127";
+$fa-var-question: "\f128";
+$fa-var-info: "\f129";
+$fa-var-exclamation: "\f12a";
+$fa-var-superscript: "\f12b";
+$fa-var-subscript: "\f12c";
+$fa-var-eraser: "\f12d";
+$fa-var-puzzle-piece: "\f12e";
+$fa-var-microphone: "\f130";
+$fa-var-microphone-slash: "\f131";
+$fa-var-shield: "\f132";
+$fa-var-calendar-o: "\f133";
+$fa-var-fire-extinguisher: "\f134";
+$fa-var-rocket: "\f135";
+$fa-var-maxcdn: "\f136";
+$fa-var-chevron-circle-left: "\f137";
+$fa-var-chevron-circle-right: "\f138";
+$fa-var-chevron-circle-up: "\f139";
+$fa-var-chevron-circle-down: "\f13a";
+$fa-var-html5: "\f13b";
+$fa-var-css3: "\f13c";
+$fa-var-anchor: "\f13d";
+$fa-var-unlock-alt: "\f13e";
+$fa-var-bullseye: "\f140";
+$fa-var-ellipsis-h: "\f141";
+$fa-var-ellipsis-v: "\f142";
+$fa-var-rss-square: "\f143";
+$fa-var-play-circle: "\f144";
+$fa-var-ticket: "\f145";
+$fa-var-minus-square: "\f146";
+$fa-var-minus-square-o: "\f147";
+$fa-var-level-up: "\f148";
+$fa-var-level-down: "\f149";
+$fa-var-check-square: "\f14a";
+$fa-var-pencil-square: "\f14b";
+$fa-var-external-link-square: "\f14c";
+$fa-var-share-square: "\f14d";
+$fa-var-compass: "\f14e";
+$fa-var-caret-square-o-down: "\f150";
+$fa-var-caret-square-o-up: "\f151";
+$fa-var-caret-square-o-right: "\f152";
+$fa-var-eur: "\f153";
+$fa-var-gbp: "\f154";
+$fa-var-usd: "\f155";
+$fa-var-inr: "\f156";
+$fa-var-jpy: "\f157";
+$fa-var-rub: "\f158";
+$fa-var-krw: "\f159";
+$fa-var-btc: "\f15a";
+$fa-var-file: "\f15b";
+$fa-var-file-text: "\f15c";
+$fa-var-sort-alpha-asc: "\f15d";
+$fa-var-sort-alpha-desc: "\f15e";
+$fa-var-sort-amount-asc: "\f160";
+$fa-var-sort-amount-desc: "\f161";
+$fa-var-sort-numeric-asc: "\f162";
+$fa-var-sort-numeric-desc: "\f163";
+$fa-var-thumbs-up: "\f164";
+$fa-var-thumbs-down: "\f165";
+$fa-var-youtube-square: "\f166";
+$fa-var-youtube: "\f167";
+$fa-var-xing: "\f168";
+$fa-var-xing-square: "\f169";
+$fa-var-youtube-play: "\f16a";
+$fa-var-dropbox: "\f16b";
+$fa-var-stack-overflow: "\f16c";
+$fa-var-instagram: "\f16d";
+$fa-var-flickr: "\f16e";
+$fa-var-adn: "\f170";
+$fa-var-bitbucket: "\f171";
+$fa-var-bitbucket-square: "\f172";
+$fa-var-tumblr: "\f173";
+$fa-var-tumblr-square: "\f174";
+$fa-var-long-arrow-down: "\f175";
+$fa-var-long-arrow-up: "\f176";
+$fa-var-long-arrow-left: "\f177";
+$fa-var-long-arrow-right: "\f178";
+$fa-var-apple: "\f179";
+$fa-var-windows: "\f17a";
+$fa-var-android: "\f17b";
+$fa-var-linux: "\f17c";
+$fa-var-dribbble: "\f17d";
+$fa-var-skype: "\f17e";
+$fa-var-foursquare: "\f180";
+$fa-var-trello: "\f181";
+$fa-var-female: "\f182";
+$fa-var-male: "\f183";
+$fa-var-gittip: "\f184";
+$fa-var-sun-o: "\f185";
+$fa-var-moon-o: "\f186";
+$fa-var-archive: "\f187";
+$fa-var-bug: "\f188";
+$fa-var-vk: "\f189";
+$fa-var-weibo: "\f18a";
+$fa-var-renren: "\f18b";
+$fa-var-pagelines: "\f18c";
+$fa-var-stack-exchange: "\f18d";
+$fa-var-arrow-circle-o-right: "\f18e";
+$fa-var-arrow-circle-o-left: "\f190";
+$fa-var-caret-square-o-left: "\f191";
+$fa-var-dot-circle-o: "\f192";
+$fa-var-wheelchair: "\f193";
+$fa-var-vimeo-square: "\f194";
+$fa-var-try: "\f195";
+$fa-var-plus-square-o: "\f196";
+
+ 17  _sass/fa/font-awesome.scss 
+@@ -0,0 +1,17 @@
+/*!
+ *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+
+@import "variables";
+@import "mixins";
+@import "path";
+@import "core";
+@import "larger";
+@import "fixed-width";
+@import "list";
+@import "bordered-pulled";
+@import "spinning";
+@import "rotated-flipped";
+@import "stacked";
+@import "icons";
+ 9  _sass/fonts.scss 
+@@ -0,0 +1,9 @@
+// opensans
+@import url('../fonts/OpenSans/opensans.css');
+// droidserif
+@import url('../fonts/droid-serif/web-fonts/droidserif_bold_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_bolditalic_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_italic_macroman/stylesheet.css');
+@import url('../fonts/droid-serif/web-fonts/droidserif_regular_macroman/stylesheet.css');
+// FontAwesome
+@import 'fa/font-awesome';
+ 6  _sass/mixin.scss 
+@@ -0,0 +1,6 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+} 
+ 365  _sass/solarized/solarized.scss 
+@@ -0,0 +1,365 @@
+/**
+ * based on Solarized Dark theme for reveal.js by Achim Staebler
+ * and Solarized colors by Ethan Schoonover
+ * http://ethanschoonover.com/solarized
+ * remixed by: Thomas Friese
+ * http://tasmo.rocks/
+**/
+
+// ---------------------------------------------
+// Main Variables
+// Solarized base colors
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+
+// Background of the presentation
+$backgroundColor: $base03;
+
+// Primary/body text
+$mainFont: 'Open Sans', Arial, sans-serif;
+$mainFontWeight: 400;
+$mainFontSize: 2rem;
+$mainColor: $base1;
+
+// Vertical spacing between blocks of text
+$blockMargin: 20px;
+
+// Headings
+$headingMargin: .5em 0;
+$headingFont: 'open_sanslight' ,'Open Sans', Arial, sans-serif;
+$headingColor: $base2;
+$headingLineHeight: 1em;
+$headingLetterSpacing: 0.02rem;
+$headingTextTransform: none;
+$headingTextShadow: 0px 0px 2px rgba( $headingColor, .5 );
+$headingFontWeight: $mainFontWeight + 400;
+$heading1TextShadow: $headingTextShadow;
+
+$heading1Size: 5rem;
+$heading2Size: 4rem;
+$heading3Size: 3rem;
+$heading4Size: 2.00rem;
+
+// Links and actions
+$linkColor: $blue;
+$linkColorHover: lighten( $linkColor, 20% );
+
+// Text selection
+$selectionBackgroundColor: $magenta;
+$selectionColor: $base3;
+
+// Generates the presentation background, can be overridden
+// to return a background image or gradient
+@mixin bodyBackground() {
+	background: $backgroundColor;
+}
+
+$headerFont: $headingFont;
+$captionFont: $mainFont;
+$codeFont: 'Source Code Pro', 'Inconsolata', monospace;
+$codeFontSize: $mainFontSize - .5rem;
+$altFont: serif;
+$italicFont: 'open_sanslight_italic', 'Open Sans', Arial, sans-serif;
+$quoteFont: 'droid_serifitalic', cursive;
+
+// reveal.js theme
+@import "../../reveal.js/css/reveal";
+// Theme template ------------------------------
+@import "../../reveal.js/css/theme/template/theme";
+// ---------------------------------------------
+@import "../mixin";
+@import "../fonts";
+@import "syntax/syntax_solarized";
+// ---------------------------------------------
+@mixin rebase( $rebase03,$rebase02,$rebase01,$rebase00,$rebase0,$rebase1,$rebase2,$rebase3 )
+{
+  background-color: $rebase03;
+  color: $rebase1;
+  //* { color: $rebase1; }
+  body {
+    background-color: $rebase03;
+  }
+  .reveal {
+    background-color: $rebase03;
+    color: $rebase1;
+    text-shadow: 0 0 1px rgba( $rebase1, .2 );
+    -webkit-text-stroke: 1px rgba( $rebase1, .2 );
+    h1,h2,h3,h4,h5,h6 {
+      color: $rebase2;
+      border-color: $rebase0;
+      text-shadow: $headingTextShadow;
+      a {
+        &:not( .image ), &:active, &:visited {
+          color: $rebase2;
+        }
+        &:hover {
+          color: $linkColorHover;
+        }
+      }
+    }
+    a {
+      &:not( .image ), &:active, &:visited {
+        color: $linkColor;
+      }
+      &:hover {
+        color: $linkColorHover;
+      }
+    }
+    h1,h2,h3,h4,h5,h6,p,li {
+      >code, >a>code {
+        background: $rebase1;
+        color: $rebase03;
+        border: 1px solid $rebase1;
+      }
+    }
+    section img {
+      border: 4px solid $rebase1;
+    }
+    figure.highlight {
+      background: $rebase3;
+    }
+  }
+}
+@mixin accentize( $accent ) {
+  a#sitelink{ background-color: $accent; }
+  a, a:active, a:visited, code.url { color: $accent; }
+  h1 { color: $accent }
+  h2,h3,h4,h5,h6 { color: $accent }
+  h1#pagetitle, h1:first-of-type { color: $accent; }
+}
+
+/* dark is default mode, so pair with general html definition */
+.light { @include rebase( $base3,$base2,$base1,$base0,$base00,$base01,$base02,$base03 ) }
+.dark { @include rebase( $base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3 ) }
+html * {
+  color-profile: sRGB;
+  -webkit-font-smoothing: antialiased;
+  font-smooth: always;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+.reveal {
+  font-weight: $mainFontWeight;
+  font-kerning: normal;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  p,
+  ul {
+    text-align: left;
+    font-weight: $mainFontWeight;
+  }
+  h1,h2,h3,h4,h5,h6,p,li {
+    >code, >a>code {
+      font-size: $mainFontSize;
+      @include border-radius( 0.15em );
+      padding: 0 0.3em;
+    }
+  }
+  pre {
+    box-shadow: none;
+    margin: 0;
+    width: unset;
+  }
+  pre,code {
+    font-family: $codeFont;
+    font-size: $codeFontSize;
+    font-weight: normal;
+  }
+  pre code {
+    padding: 0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  figure.highlight {
+    width: 90%;
+    margin: .5em auto;
+    padding: .7em 1em .8em;
+    text-shadow: none;
+    box-shadow: 0px 0px 6px rgba( 0,0,0,0.3 );
+    @include border-radius( 0.4em );
+  }
+  blockquote {
+    background: inherit;
+    box-shadow: none;
+    font-family: $quoteFont;
+    font-size: 2.8rem;
+    font-style: normal;
+    font-weight: 100;
+    padding-left: 3em;
+    i.fa {
+      position:absolute;
+      font-size:2em;
+      font-style: italic;
+      line-height:1;
+      left:-.1em;
+      top:-.1em;
+    }
+    code {
+      font-size: 1.1em;
+    }
+  }
+  p > img,
+  .image {
+    display: block;
+    text-align: center;
+  }
+  iframe,
+  img {
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  }
+  .slides>section,
+  .slides>section>section {
+    padding: 0;
+  }
+  .slides>section {
+    >h1:first-child {
+      margin-top: 0;
+    }
+    &[data-background="black"] {
+      h1,h2,h3,h4,h5,h6 {
+        color: $base2;
+      }
+    }
+    .fragment.highlight-red,
+    .fragment.highlight-current-red,
+    .fragment.highlight-green,
+    .fragment.highlight-current-green,
+    .fragment.highlight-blue,
+    .fragment.highlight-current-blue {
+      opacity: 1;
+    }
+    .fragment.highlight-red.visible,
+    .fragment.highlight-current-red.current-fragment {
+      * {
+        color: $red;
+        text-shadow: 0 0 1px rgba( $red, .2 );
+        -webkit-text-stroke: 1px rgba( $red, .2 );
+      }
+      color: $red;
+      text-shadow: 0 0 1px rgba( $red, .2 );
+      -webkit-text-stroke: 1px rgba( $red, .2 );
+    }
+    .fragment.highlight-green.visible,
+    .fragment.highlight-current-green.current-fragment {
+      * {
+        color: $green;
+        text-shadow: 0 0 1px rgba( $green, .2 );
+        -webkit-text-stroke: 1px rgba( $green, .2 );
+      }
+      color: $green;
+      text-shadow: 0 0 1px rgba( $green, .2 );
+      -webkit-text-stroke: 1px rgba( $green, .2 );
+    }
+    .fragment.highlight-blue.visible,
+    .fragment.highlight-current-blue.current-fragment {
+      * {
+        color: $blue;
+        text-shadow: 0 0 1px rgba( $blue, .2 );
+        -webkit-text-stroke: 1px rgba( $blue, .2 );
+      }
+      color: $blue;
+      text-shadow: 0 0 1px rgba( $blue, .2 );
+      -webkit-text-stroke: 1px rgba( $blue, .2 );
+    }
+  }
+  // Fontawesome
+  .fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 35%;
+    font-style: normal;
+    font-weight: 200;
+    vertical-align: super;
+    line-height: 1;
+    padding-left: 0.2em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .fa-twitter, .fa-github {
+    font-size: 100%;
+  }
+  // accentize
+  .slides>section.yellow, .yellow{
+    @include accentize( $yellow );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color:$yellow;
+      text-shadow: 0 0 1px rgba( $yellow, .2 );
+      -webkit-text-stroke: 1px rgba( $yellow, .2 );
+    }
+  }
+  .slides>section.orange, .orange {
+    @include accentize( $orange );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $orange;
+      text-shadow: 0 0 1px rgba( $orange, .2 );
+      -webkit-text-stroke: 1px rgba( $orange, .2 );
+    }
+  }
+  .slides>section.red, .red {
+    @include accentize( $red );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $red;
+      text-shadow: 0 0 1px rgba( $red, .2 );
+      -webkit-text-stroke: 1px rgba( $red, .2 );
+    }
+  }
+  .slides>section.magenta, .magenta {
+    @include accentize( $magenta );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $magenta;
+      text-shadow: 0 0 1px rgba( $magenta, .2 );
+      -webkit-text-stroke: 1px rgba( $magenta, .2 );
+    }
+  }
+  .slides>section.violet, .violet {
+    @include accentize( $violet );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $violet;
+      text-shadow: 0 0 1px rgba( $violet, .2 );
+      -webkit-text-stroke: 1px rgba( $violet, .2 );
+    }
+  }
+  .slides>section.blue, .blue {
+    @include accentize( $blue );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color:$blue;
+      text-shadow: 0 0 1px rgba( $blue, .2 );
+      -webkit-text-stroke: 1px rgba( $blue, .2 );
+    }
+  }
+  .slides>section.cyan, .cyan {
+    @include accentize( $cyan );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $cyan;
+      text-shadow: 0 0 1px rgba( $cyan, .2 );
+      -webkit-text-stroke: 1px rgba( $cyan, .2 );
+    }
+  }
+  .slides>section.green, .green {
+    @include accentize( $green );
+    h1,h2,h3,h4,h5,h6,a,a:active,a:visited,code.url {
+      color: $green;
+      text-shadow: 0 0 1px rgba( $green, .2 );
+      -webkit-text-stroke: 1px rgba( $green, .2 );
+    }
+  }
+}
+ 98  _sass/solarized/syntax/syntax_solarized.scss 
+@@ -0,0 +1,98 @@
+/**
+ * Solarized syntax
+ * for use with Jekyll and Pygments
+ * based on Solarized Dark theme for reveal.js by Achim Staebler
+ * and Solarized colors by Ethan Schoonover
+ * http://ethanschoonover.com/solarized
+ * remixed by: Thomas Friese
+ * http://tasmo.rocks/
+**/
+@mixin syntax( $sybase03,$sybase02,$sybase01,$sybase00,$sybase0,$sybase1,$sybase2,$sybase3,$syyellow,$syorange,$syred,$symagenta,$syviolet,$syblue,$sycyan,$sygreen )
+{
+  .reveal pre {
+    background-color: $sybase03; color: $sybase1;
+    code a {
+      &:not( .image ), &:active, &:visited {
+        color: $sybase1;
+      }
+      &:hover {
+        color: lighten( $sybase1, 20% );
+      }
+    }
+  }
+  .reveal pre code {
+  	.lineno { color: $sybase01 } // Line Numbers
+  	.c { color: $sybase01 } /* Comment */
+  	.err { color: $sybase1 } /* Error */
+  	.g { color: $sybase1 } /* Generic */
+  	.k { color: $sygreen } /* Keyword */
+  	.l { color: $sybase1 } /* Literal */
+  	.n { color: $sybase1 } /* Name */
+  	.o { color: $sygreen } /* Operator */
+  	.x { color: $syorange } /* Other */
+  	.p { color: $sybase1 } /* Punctuation */
+  	.cm { color: $sybase01 } /* Comment.Multiline */
+  	.cp { color: $sygreen } /* Comment.Preproc */
+  	.c1 { color: $sybase01 } /* Comment.Single */
+  	.cs { color: $sygreen } /* Comment.Special */
+  	.gd { color: $sycyan } /* Generic.Deleted */
+  	.ge { color: $sybase1; font-style: italic } /* Generic.Emph */
+  	.gr { color: $syred } /* Generic.Error */
+  	.gh { color: $syorange } /* Generic.Heading */
+  	.gi { color: $sygreen } /* Generic.Inserted */
+  	.go { color: $sybase1 } /* Generic.Output */
+  	.gp { color: $sybase1 } /* Generic.Prompt */
+  	.gs { color: $sybase1; font-weight: bold } /* Generic.Strong */
+  	.gu { color: $syorange } /* Generic.Subheading */
+  	.gt { color: $sybase1 } /* Generic.Traceback */
+  	.kc { color: $syorange } /* Keyword.Constant */
+  	.kd { color: $syblue } /* Keyword.Declaration */
+  	.kn { color: $sygreen } /* Keyword.Namespace */
+  	.kp { color: $sygreen } /* Keyword.Pseudo */
+  	.kr { color: $syblue } /* Keyword.Reserved */
+  	.kt { color: $syred } /* Keyword.Type */
+  	.ld { color: $sybase1 } /* Literal.Date */
+  	.m { color: $sycyan } /* Literal.Number */
+  	.s { color: $sycyan } /* Literal.String */
+  	.na { color: $sybase1 } /* Name.Attribute */
+  	.nb { color: $syyellow } /* Name.Builtin */
+  	.nc { color: $syblue } /* Name.Class */
+  	.no { color: $syorange } /* Name.Constant */
+  	.nd { color: $syblue } /* Name.Decorator */
+  	.ni { color: $syorange } /* Name.Entity */
+  	.ne { color: $syorange } /* Name.Exception */
+  	.nf { color: $syblue } /* Name.Function */
+  	.nl { color: $sybase1 } /* Name.Label */
+  	.nn { color: $sybase1 } /* Name.Namespace */
+  	.nx { color: $sybase1 } /* Name.Other */
+  	.py { color: $sybase1 } /* Name.Property */
+  	.nt { color: $syblue } /* Name.Tag */
+  	.nv { color: $syblue } /* Name.Variable */
+  	.ow { color: $sygreen } /* Operator.Word */
+  	.w { color: $sybase1 } /* Text.Whitespace */
+  	.mf { color: $sycyan } /* Literal.Number.Float */
+  	.mh { color: $sycyan } /* Literal.Number.Hex */
+  	.mi { color: $sycyan } /* Literal.Number.Integer */
+  	.mo { color: $sycyan } /* Literal.Number.Oct */
+  	.sb { color: $sybase01 } /* Literal.String.Backtick */
+  	.sc { color: $sycyan } /* Literal.String.Char */
+  	.sd { color: $sybase1 } /* Literal.String.Doc */
+  	.s2 { color: $sycyan } /* Literal.String.Double */
+  	.se { color: $syorange } /* Literal.String.Escape */
+  	.sh { color: $sybase1 } /* Literal.String.Heredoc */
+  	.si { color: $sycyan } /* Literal.String.Interpol */
+  	.sx { color: $sycyan } /* Literal.String.Other */
+  	.sr { color: $syred } /* Literal.String.Regex */
+  	.s1 { color: $sycyan } /* Literal.String.Single */
+  	.ss { color: $sycyan } /* Literal.String.Symbol */
+  	.bp { color: $syblue } /* Name.Builtin.Pseudo */
+  	.vc { color: $syblue } /* Name.Variable.Class */
+  	.vg { color: $syblue } /* Name.Variable.Global */
+  	.vi { color: $syblue } /* Name.Variable.Instance */
+  	.il { color: $sycyan } /* Literal.Number.Integer.Long */
+  }
+}
+// dark syntax for light layout
+.light { @include syntax( $base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3,$yellow,$orange,$red,$magenta,$violet,$blue,$cyan,$green ) }
+// light syntax for dark layout
+.dark { @include syntax( $base3,$base2,$base1,$base0,$base00,$base01,$base02,$base03,$yellow,$orange,$red,$magenta,$violet,$blue,$cyan,$green ) }
+ 6  assets/css/style.scss 
+@@ -0,0 +1,6 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+@import "solarized/solarized.scss";
+ BIN +61.4 KB assets/fonts/FontAwesome/FontAwesome.otf 
+Binary file not shown.
+ BIN +37.3 KB assets/fonts/FontAwesome/fontawesome-webfont.eot 
+Binary file not shown.
+ 414  assets/fonts/FontAwesome/fontawesome-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +78.8 KB assets/fonts/FontAwesome/fontawesome-webfont.ttf 
+Binary file not shown.
+ BIN +43.4 KB assets/fonts/FontAwesome/fontawesome-webfont.woff 
+Binary file not shown.
+ BIN +19.1 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Bold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.6 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.ttf 
+Binary file not shown.
+ BIN +21.9 KB assets/fonts/OpenSans/OpenSans-Bold-webfont.woff 
+Binary file not shown.
+ BIN +19.7 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +38.2 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +22.5 KB assets/fonts/OpenSans/OpenSans-BoldItalic-webfont.woff 
+Binary file not shown.
+ BIN +20.4 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +41 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.ttf 
+Binary file not shown.
+ BIN +23.2 KB assets/fonts/OpenSans/OpenSans-ExtraBold-webfont.woff 
+Binary file not shown.
+ BIN +21.1 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +42.4 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +24 KB assets/fonts/OpenSans/OpenSans-ExtraBoldItalic-webfont.woff 
+Binary file not shown.
+ BIN +19.8 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Italic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.5 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.ttf 
+Binary file not shown.
+ BIN +22.6 KB assets/fonts/OpenSans/OpenSans-Italic-webfont.woff 
+Binary file not shown.
+ BIN +19.1 KB assets/fonts/OpenSans/OpenSans-Light-webfont.eot 
+Binary file not shown.
+ 1,831  assets/fonts/OpenSans/OpenSans-Light-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +36.5 KB assets/fonts/OpenSans/OpenSans-Light-webfont.ttf 
+Binary file not shown.
+ BIN +21.7 KB assets/fonts/OpenSans/OpenSans-Light-webfont.woff 
+Binary file not shown.
+ BIN +20.1 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.eot 
+Binary file not shown.
+ 1,835  assets/fonts/OpenSans/OpenSans-LightItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +39 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.ttf 
+Binary file not shown.
+ BIN +22.9 KB assets/fonts/OpenSans/OpenSans-LightItalic-webfont.woff 
+Binary file not shown.
+ BIN +19.4 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.eot 
+Binary file not shown.
+ 1,831  assets/fonts/OpenSans/OpenSans-Regular-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +37.3 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.ttf 
+Binary file not shown.
+ BIN +22.1 KB assets/fonts/OpenSans/OpenSans-Regular-webfont.woff 
+Binary file not shown.
+ BIN +19.6 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-Semibold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +38.6 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.ttf 
+Binary file not shown.
+ BIN +22.4 KB assets/fonts/OpenSans/OpenSans-Semibold-webfont.woff 
+Binary file not shown.
+ BIN +20.5 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.eot 
+Binary file not shown.
+ 1,830  assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +39.3 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +23.2 KB assets/fonts/OpenSans/OpenSans-SemiboldItalic-webfont.woff 
+Binary file not shown.
+ 110  assets/fonts/OpenSans/opensans.css 
+@@ -0,0 +1,110 @@
+// OpenSans
+@font-face {
+	font-family: 'open_sansbold';
+	src: url('OpenSans-Bold-webfont.eot');
+	src: url('OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Bold-webfont.woff') format('woff'),
+		 url('OpenSans-Bold-webfont.ttf') format('truetype'),
+		 url('OpenSans-Bold-webfont.svg#open_sansbold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansbold_italic';
+	src: url('OpenSans-BoldItalic-webfont.eot');
+	src: url('OpenSans-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-BoldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-BoldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-BoldItalic-webfont.svg#open_sansbold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansextrabold';
+	src: url('OpenSans-ExtraBold-webfont.eot');
+	src: url('OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-ExtraBold-webfont.woff') format('woff'),
+		 url('OpenSans-ExtraBold-webfont.ttf') format('truetype'),
+		 url('OpenSans-ExtraBold-webfont.svg#open_sansextrabold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansextrabold_italic';
+	src: url('OpenSans-ExtraBoldItalic-webfont.eot');
+	src: url('OpenSans-ExtraBoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-ExtraBoldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-ExtraBoldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-ExtraBoldItalic-webfont.svg#open_sansextrabold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansitalic';
+	src: url('OpenSans-Italic-webfont.eot');
+	src: url('OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Italic-webfont.woff') format('woff'),
+		 url('OpenSans-Italic-webfont.ttf') format('truetype'),
+		 url('OpenSans-Italic-webfont.svg#open_sansitalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanslight';
+	src: url('OpenSans-Light-webfont.eot');
+	src: url('OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Light-webfont.woff') format('woff'),
+		 url('OpenSans-Light-webfont.ttf') format('truetype'),
+		 url('OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanslight_italic';
+	src: url('OpenSans-LightItalic-webfont.eot');
+	src: url('OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-LightItalic-webfont.woff') format('woff'),
+		 url('OpenSans-LightItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-LightItalic-webfont.svg#open_sanslight_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sansregular';
+	src: url('OpenSans-Regular-webfont.eot');
+	src: url('OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Regular-webfont.woff') format('woff'),
+		 url('OpenSans-Regular-webfont.ttf') format('truetype'),
+		 url('OpenSans-Regular-webfont.svg#open_sansregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanssemibold';
+	src: url('OpenSans-Semibold-webfont.eot');
+	src: url('OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-Semibold-webfont.woff') format('woff'),
+		 url('OpenSans-Semibold-webfont.ttf') format('truetype'),
+		 url('OpenSans-Semibold-webfont.svg#open_sanssemibold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'open_sanssemibold_italic';
+	src: url('OpenSans-SemiboldItalic-webfont.eot');
+	src: url('OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('OpenSans-SemiboldItalic-webfont.woff') format('woff'),
+		 url('OpenSans-SemiboldItalic-webfont.ttf') format('truetype'),
+		 url('OpenSans-SemiboldItalic-webfont.svg#open_sanssemibold_italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+ 201  assets/fonts/droid-serif/Apache License.txt 
+@@ -0,0 +1,201 @@
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 230  assets/fonts/droid-serif/How_to_use_webfonts.html 
+@@ -0,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" charset="utf-8" />
+
+	<style type="text/css" media="screen">
+		/*-- RESET ------*/
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, font, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center, dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend, table, 
+		caption, tbody, tfoot, thead, tr, th, td 
+		                  {margin: 0;padding: 0;border: 0;outline: 0;
+		                  font-size: 100%;vertical-align: baseline;
+		                  background: transparent;}
+		body              {line-height: 1;}
+		ol, ul            {list-style: none;}
+		blockquote, q     {quotes: none;}
+		blockquote:before, blockquote:after,
+		q:before, q:after {content: '';	content: none;}
+		:focus            {outline: 0;}
+		ins               {text-decoration: none;}
+		del               {text-decoration: line-through;}
+		table             {border-collapse: collapse;border-spacing: 0;}
+
+		/*-- GRID -----*/
+		.section {margin-bottom: 18px;
+		}
+		.section:after	{content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+		.section 		{*zoom: 1;}
+
+		.section .firstcolumn,
+		.section .firstcol {margin-left: 0;}
+
+		.grid1, .grid1_2cols, .grid1_3cols, .grid1_4cols, .grid2, .grid2_3cols, .grid2_4cols, .grid3, .grid3_2cols, .grid3_4cols, .grid4, .grid4_3cols, .grid5, .grid5_2cols, .grid5_3cols, .grid5_4cols, .grid6, .grid6_4cols, .grid7, .grid7_2cols, .grid7_3cols, .grid7_4cols, .grid8, .grid8_3cols, .grid9, .grid9_2cols, .grid9_4cols, .grid10, .grid10_3cols, .grid10_4cols, .grid11, .grid11_2cols, .grid11_3cols, .grid11_4cols, .grid12
+		{margin-left: 15px;float: left;display: inline; overflow: hidden;}
+		.width5, .grid5, .span-5 {width: 335px;}
+		.width5_2cols,.grid5_2cols {width: 160px;}
+		.width5_3cols,.grid5_3cols  {width: 101px;}
+		.width5_4cols,.grid5_4cols  {width: 72px;}
+		.input_width5 {width: 329px;}
+
+		.width6, .grid6, .span-6 {width: 405px;}
+		.width6_4cols,.grid6_4cols  {width: 90px;}
+		.input_width6 {width: 399px;}
+
+		.width7, .grid7, .span-7 {width: 475px;}
+		.width7_2cols,.grid7_2cols {width: 230px;}
+		.width7_3cols,.grid7_3cols  {width: 148px;}
+		.width7_4cols,.grid7_4cols  {width: 107px;}
+		.input_width7 {width: 469px;}
+
+		/*-- STYLES -----*/
+		body {
+			color: #000;
+			background-color: #dcdcdc;
+			font: 13px Arial, sans-serif;
+		}
+
+		a {
+			text-decoration: none;
+			color: #1883ba;
+		}
+
+		h1{
+			font-size: 32px;
+			font-weight: normal;
+			font-style: normal;
+			margin-bottom: 18px;
+		}
+
+		h2{
+			font-size: 18px;
+		}
+
+		#container {
+			width: 865px;
+			margin: 0px auto;
+		}
+
+
+
+		#header {
+			height:109px;
+			font-size: 36px;
+			background-color: #000;
+			color: #fff;
+			text-indent:-9999px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASoAAABtCAMAAAAhztx9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADBQTFRFzen3mNLwDCc17fj8GVRwUbXlLprOrNzyesbrEjtOZb3oJXulP63iAAAA////MqfgopnD5wAABSNJREFUeNrs2u1yqyAQBmBARATU+7/bo6CRTwMp7ZnJvPurjUbrU1gWkGyIyiAgABWoQAUqUIEKASpQgQpUoAIVAlSgAhWoQAUqxJdSCbYsHFQ1MS/Lr1h9IRU7qBZQVVNpUL0PDao2K1BVJ/ZjKORdyb6SSiwLc0VDT6uvohKcMS72H/gyn0VDx7Lhq6hsM2LiyFZ6404KrSobzuawWoQ4pRhyVZnKdj7b/djMO1btX0V197m9UbHe5cJ3jYB7Wj873TwL1FUVw+CR1DEHrMT6jct+59Ke1qD6nwGqn1HpTATJQPN9rGGcR+1caC1y17oOPl/XSDoRQiiV4/2ZumMML6zKh4z/UXLUfTX+iNL93hOl6dmPVGxJwkuUevY+5yJc/WAiLQvZvTSSxnXeSNY7hul6gnUNPvaecA0PEek99/4Bvc8b4qc/vhDQ0qF0l59QiTk6osOFIvYZFQ2ffM1S7UFMnmr1RSKqdTCPVHKIb9KFSqTHeEB1TCvaqWKpItVttZatYqr42UMqmt6jjYqHoQNF96vQ0YpQbqn2RSWuS7kdlStc77NPeuaoUVHiU+3Zy8Vk//uT97w0PERKVK8vZaik07luLvebN1I9zLK8OYPDEcFvoVXaJ3W6oTLF/0qTe+jN2Hw25pqGOS6xyhLVKktUo0Wm4ajQgUokPUz7XfDqY6KV6vhzTe6GIdVmhvv3ODcPd+PJUK2qQDUlkM0jYL4KjiHOdhZR+cNgFVUxP0RUfvOLqeh9KEflD4PeV8ekTXWimjMLsF6XOxDmqOH1pZJlKlWmIiQYOzdyf5VmBsguVGmjCvi0zfjhqNiXSn1GZRMSyVGRJOf3odK5HW6vmLJU0TZcda6SP6SSD1Sun00ZqiFKYz2p2Fsqt1WiW0fAdRrfU9EyFSmndXKWBDKhMvFVPqFifvAHKnE/+Unlii/RQGWGc3ay11DKPFB5HnHJ/VAskPO/caX2m+o4c/gpVa5W59lttZTKlvTnMFhFdVY3V7EsS1Q0X1cZJW3FdeXnHJX1OU8Iqcj/pPJnOHVU8Yw1N0UxzoMUJzavDpalMvcwWKC6Z1H076i8yrSS6pxTkCG0UuWJXlkqT+Va7vQLVNVpXeSoXGWqm6iupOO3HVVePkjmuOP2TOXSGS3nql+nSkfAV7l1WDVTnY805qgGb5T0p8vRkF+gcqlOFkfA0V6LdKNaKqm2M7V/QGUfRaUrC1SV5rw0zM4lqmsYfKyraBeqqmo96JjsI6rp9deq8gzNpzJhDVukOofBx2q9E1XFHDBe6PuEirZS2T57T+XKVNaUPM4BO1FVrCzw6Oyfd8Aaqm3wTyxT3QVccWWhE1XFehWPGdupxjCtV1HJpwVjEo8ZT+tVnagqVkF53GFrqILZn927IVsbVZB0lJ+A4nqchlTJKmgvqvdr6wGVYHVUZJikm/sZ5ZbJZSuV8pY6g2opmbqQ9WFt3U2RulC93bHhaY+toIrryWlrpdq8tmgz1zAVqNwKfdolvehC9XYfkL+tWiuo6NZONXqNka7BYg3JzM2f9gE7Ub3ZXU5qCV1DJQOradw+oHL1pcmtwZPMuPEwV2/ZXY7fUUhaln1nYc69s5B9aSE9S+cmy9S+saDCfSZVeokgefHAvt9gXpOUaXqdl1xhTN5ZGF/vLJimRRgEqEAFKlCBClQIUIEKVKACFahAhQAVqEAFKlCBCgEqUIEKVKACFQJUoAIVqEAFKgSoQAUqUIEKVKBCgApUfx3/BBgAeuw63hnBp0AAAAAASUVORK5CYII=) no-repeat left center;
+			background-color: #31a7e0;
+
+		}
+
+		#main_content {
+			background-color: #fff;
+			padding: 20px 20px 20px;
+		}
+
+
+		#footer p {
+			margin: 0;
+			padding-top: 10px;
+			padding-bottom: 50px;
+			color: #333;
+			font: 10px Arial, sans-serif;
+		}
+		code {
+			white-space: pre;
+			background-color: #eee;
+			display: block;
+			padding: 10px;
+			margin-bottom: 18px;
+			overflow: auto;
+		}
+
+		.box  { 
+		  padding: 18px; 
+		  margin-bottom: 18px; 
+		  background: #eee; 
+		}
+		.bottom,.last 	{margin-bottom:0 !important; padding-bottom:0 !important;}
+
+
+
+		p{
+			line-height: 1.2em;
+			margin-bottom: 18px;
+			font: 13px Arial, sans-serif;
+		}
+
+
+
+		h3{
+			font-size: 15px;
+			margin-top: 18px;
+		}
+
+		.sidebar p{
+			font-size: 12px;
+			line-height: 1.4em;
+		}
+
+	</style>
+
+<title>How to Use Webfonts</title>
+
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		Fontspring
+	</div>
+	<div id="main_content">
+			<div class="section">
+				<div class="grid7 firstcol">
+					<h1>Installing Webfonts</h1>
+
+					<p>Webfonts are supported by all major browser platforms but not all in the same way. There are currently four different font formats that must be included in order to target all browsers. This includes TTF, WOFF, EOT and SVG.</p>
+
+					<h2>1. Upload your webfonts</h2>
+					<p>You must upload your webfont kit to your website. They should be in or near the same directory as your CSS files.</p>
+
+					<h2>2. Include the webfont stylesheet</h2>
+					<p>A special CSS @font-face declaration helps the various browsers select the appropriate font it needs without causing you a bunch of headaches. Learn more about this syntax by reading the <a href="http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax">Fontspring blog post</a> about it. The code for it is as follows:</p>
+
+
+<code>
+@font-face{ 
+	font-family: 'MyWebFont';
+	src: url('WebFont.eot');
+	src: url('WebFont.eot?iefix') format('eot'),
+	     url('WebFont.woff') format('woff'),
+	     url('WebFont.ttf') format('truetype'),
+	     url('WebFont.svg#webfont') format('svg');
+}
+</code>
+	<p>We've already gone ahead and generated the code for you. All you have to do is link to the stylesheet in your HTML, like this:</p>
+	<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;stylesheet.css&quot; type=&quot;text/css&quot; charset=&quot;utf-8&quot; /&gt;</code>
+
+					<h2>3. Modify your own stylesheet</h2>
+					<p>To take advantage of your new fonts, you must tell your stylesheet to use them. Look at the original @font-face declaration above and find the property called "font-family." The name linked there will be what you use to reference the font. Prepend that webfont name to the font stack in the "font-family" property, inside the selector you want to change. For example:</p>
+<code>p { font-family: 'MyWebFont', Arial, sans-serif; }</code>
+
+<h2>4. Test</h2>
+<p>Getting webfonts to work cross-browser <em>can</em> be tricky. Use the information in the sidebar to help you if you find that fonts aren't loading in a particular browser.</p>
+				</div>
+
+				<div class="grid5 sidebar">
+					<div class="box">
+						<h2>Troubleshooting<br />Font-Face Problems</h2>
+						<p>Having trouble getting your webfonts to load in your new website? Here are some tips to sort out what might be the problem.</p>
+
+						<h3>Fonts not showing in any browser</h3>
+
+						<p>This sounds like you need to work on the plumbing. You either did not upload the fonts to the correct directory, or you did not link the fonts properly in the CSS. If you've confirmed that all this is correct and you still have a problem, take a look at your .htaccess file and see if requests are getting intercepted.</p>
+
+						<h3>Fonts not loading in iPhone or iPad</h3>
+
+						<p>The most common problem here is that you are serving the fonts from an IIS server. IIS refuses to serve files that have unknown MIME types. If that is the case, you must set the MIME type for SVG to "image/svg+xml" in the server settings. Follow these instructions from Microsoft if you need help.</p>
+
+						<h3>Fonts not loading in Firefox</h3>
+
+						<p>The primary reason for this failure? You are still using a version Firefox older than 3.5. So upgrade already! If that isn't it, then you are very likely serving fonts from a different domain. Firefox requires that all font assets be served from the same domain. Lastly it is possible that you need to add WOFF to your list of MIME types (if you are serving via IIS.)</p>
+
+						<h3>Fonts not loading in IE</h3>
+
+						<p>Are you looking at Internet Explorer on an actual Windows machine or are you cheating by using a service like Adobe BrowserLab? Many of these screenshot services do not render @font-face for IE. Best to test it on a real machine.</p>
+
+						<h3>Fonts not loading in IE9</h3>
+
+						<p>IE9, like Firefox, requires that fonts be served from the same domain as the website. Make sure that is the case.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+</body>
+</html>
+ 364  assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-demo.html 
+Large diffs are not rendered by default.
+
+ BIN +26.8 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.eot 
+Binary file not shown.
+ 1,455  ...onts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +59 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.ttf 
+Binary file not shown.
+ BIN +29.8 KB assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/DroidSerif-Bold-webfont.woff 
+Binary file not shown.
+ 11  assets/fonts/droid-serif/web-fonts/droidserif_bold_macroman/stylesheet.css 
+@@ -0,0 +1,11 @@
+@font-face {
+    font-family: 'droid_serifbold';
+    src: url('DroidSerif-Bold-webfont.eot');
+    src: url('DroidSerif-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSerif-Bold-webfont.woff') format('woff'),
+         url('DroidSerif-Bold-webfont.ttf') format('truetype'),
+         url('DroidSerif-Bold-webfont.svg#droid_serifbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+ 364  ...onts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-demo.html 
+Large diffs are not rendered by default.
+
+ BIN +29.9 KB ...ts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.eot 
+Binary file not shown.
+ 1,458  ...erif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +70.5 KB ...ts/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.ttf 
+Binary file not shown.
+ BIN +34.5 KB ...s/droid-serif/web-fonts/droidserif_bolditalic_macroman/DroidSerif-BoldItalic-webfont.woff 
+Binary file not shown.
+ 12  assets/fonts/droid-serif/web-fonts/droidserif_bolditalic_macroman/stylesheet.css 
+@@ -0,0 +1,12 @@
+@font-face {
+    font-family: 'droid_serifbold_italic';
+    src: url('DroidSerif-BoldItalic-webfont.eot');
+    src: url('DroidSerif-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSerif-BoldItalic-webfont.woff') format('woff'),
+         url('DroidSerif-BoldItalic-webfont.ttf') format('truetype'),
+         url('DroidSerif-BoldItalic-webfont.svg#droid_serifbold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+ 364  assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-demo.html 
+@@ -0,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="specimen_files/easytabs.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="specimen_files/specimen_stylesheet.css" type="text/css" charset="utf-8" />
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" charset="utf-8" />
+
+	<style type="text/css">
+			body{
+			font-family: 'droid_serifitalic';
+					}
+</style>
+
+<title>Droid Serif Italic Specimen</title>
+
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$('#container').easyTabs({defaultContent:1});
+		});
+	</script>
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		Droid Serif Italic	</div>
+	<ul class="tabs">
+		<li><a href="#specimen">Specimen</a></li>
+		<li><a href="#layout">Sample Layout</a></li>
+		<li><a href="#installing">Installing Webfonts</a></li>
+
+	</ul>
+
+	<div id="main_content">
+
+
+			<div id="specimen">
+
+				<div class="section">
+					<div class="grid12 firstcol">
+						<div class="huge">AaBb</div>
+					</div>
+				</div>
+
+				<div class="section">
+					<div class="glyph_range">A&#x200B;B&#x200b;C&#x200b;D&#x200b;E&#x200b;F&#x200b;G&#x200b;H&#x200b;I&#x200b;J&#x200b;K&#x200b;L&#x200b;M&#x200b;N&#x200b;O&#x200b;P&#x200b;Q&#x200b;R&#x200b;S&#x200b;T&#x200b;U&#x200b;V&#x200b;W&#x200b;X&#x200b;Y&#x200b;Z&#x200b;a&#x200b;b&#x200b;c&#x200b;d&#x200b;e&#x200b;f&#x200b;g&#x200b;h&#x200b;i&#x200b;j&#x200b;k&#x200b;l&#x200b;m&#x200b;n&#x200b;o&#x200b;p&#x200b;q&#x200b;r&#x200b;s&#x200b;t&#x200b;u&#x200b;v&#x200b;w&#x200b;x&#x200b;y&#x200b;z&#x200b;1&#x200b;2&#x200b;3&#x200b;4&#x200b;5&#x200b;6&#x200b;7&#x200b;8&#x200b;9&#x200b;0&#x200b;&amp;&#x200b;.&#x200b;,&#x200b;?&#x200b;!&#x200b;&#64;&#x200b;(&#x200b;)&#x200b;#&#x200b;$&#x200b;%&#x200b;*&#x200b;+&#x200b;-&#x200b;=&#x200b;:&#x200b;;</div>
+				</div>
+				<div class="section">
+					<div class="grid12 firstcol">
+						<table class="sample_table">
+							<tr><td>10</td><td class="size10">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>11</td><td class="size11">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>12</td><td class="size12">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>13</td><td class="size13">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>14</td><td class="size14">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>16</td><td class="size16">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>18</td><td class="size18">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>20</td><td class="size20">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>24</td><td class="size24">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>30</td><td class="size30">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>36</td><td class="size36">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>48</td><td class="size48">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>60</td><td class="size60">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>72</td><td class="size72">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+							<tr><td>90</td><td class="size90">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</td></tr>
+						</table>
+
+					</div>
+
+				</div>
+
+
+
+								<div class="section" id="bodycomparison">
+
+
+										<div id="xheight">
+				<div class="fontbody">&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;&#x25FC;body</div><div class="arialbody">body</div><div class="verdanabody">body</div><div class="georgiabody">body</div></div>
+										<div class="fontbody" style="z-index:1">
+											body<span>Droid Serif Italic</span>
+										</div>
+										<div class="arialbody" style="z-index:1">
+											body<span>Arial</span>
+										</div>
+										<div class="verdanabody" style="z-index:1">
+											body<span>Verdana</span>
+										</div>
+										<div class="georgiabody" style="z-index:1">
+											body<span>Georgia</span>
+										</div>
+
+
+
+								</div>
+
+
+				<div class="section psample psample_row1" id="">
+
+					<div class="grid2 firstcol">
+						<p class="size10"><span>10.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid3">
+						<p class="size11"><span>11.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid3">
+						<p class="size12"><span>12.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid4">
+						<p class="size13"><span>13.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="white_blend"></div>
+
+				</div>
+				<div class="section psample psample_row2" id="">
+					<div class="grid3 firstcol">
+						<p class="size14"><span>14.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid4">
+						<p class="size16"><span>16.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid5">
+						<p class="size18"><span>18.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+
+					<div class="white_blend"></div>
+
+				</div>
+
+				<div class="section psample psample_row3" id="">
+					<div class="grid5 firstcol">
+						<p class="size20"><span>20.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+					<div class="grid7">
+						<p class="size24"><span>24.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+
+					<div class="white_blend"></div>
+
+				</div>
+
+				<div class="section psample psample_row4" id="">
+					<div class="grid12 firstcol">
+						<p class="size30"><span>30.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+					<div class="white_blend"></div>
+
+				</div>
+
+
+
+				<div class="section psample psample_row1 fullreverse">
+					<div class="grid2 firstcol">
+						<p class="size10"><span>10.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid3">
+						<p class="size11"><span>11.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid3">
+						<p class="size12"><span>12.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid4">
+						<p class="size13"><span>13.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="black_blend"></div>
+
+				</div>
+
+				<div class="section psample psample_row2 fullreverse">
+					<div class="grid3 firstcol">
+						<p class="size14"><span>14.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid4">
+						<p class="size16"><span>16.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="grid5">
+						<p class="size18"><span>18.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+
+					</div>
+					<div class="black_blend"></div>
+
+				</div>
+
+				<div class="section psample fullreverse psample_row3" id="">
+					<div class="grid5 firstcol">
+						<p class="size20"><span>20.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+					<div class="grid7">
+						<p class="size24"><span>24.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+
+					<div class="black_blend"></div>
+
+				</div>
+
+				<div class="section psample fullreverse psample_row4" id="" style="border-bottom: 20px #000 solid;">
+					<div class="grid12 firstcol">
+						<p class="size30"><span>30.</span>Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
+					</div>
+					<div class="black_blend"></div>
+
+				</div>
+
+
+
+
+			</div>
+
+			<div id="layout">
+
+				<div class="section">
+
+					<div class="grid12 firstcol">
+						<h1>Lorem Ipsum Dolor</h1>
+						<h2>Etiam porta sem malesuada magna mollis euismod</h2>
+
+						<p class="byline">By <a href="#link">Aenean Lacinia</a></p>
+					</div>
+				</div>
+				<div class="section">
+					<div class="grid8 firstcol">
+						<p class="large">Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. </p>
+
+
+						<h3>Pellentesque ornare sem</h3>
+
+						<p>Maecenas sed diam eget risus varius blandit sit amet non magna. Maecenas faucibus mollis interdum. Donec ullamcorper nulla non metus auctor fringilla. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam id dolor id nibh ultricies vehicula ut id elit. </p>
+
+						<p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+
+						<p>Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean lacinia bibendum nulla sed consectetur. </p>
+
+						<p>Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla. </p>
+
+						<h3>Cras mattis consectetur</h3>
+
+						<p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum. </p>
+
+						<p>Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum.</p>
+					</div>
+
+					<div class="grid4 sidebar">
+
+						<div class="box reverse">
+							<p class="last">Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+						</div>
+
+						<p class="caption">Maecenas sed diam eget risus varius.</p>
+
+						<p>Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Vestibulum id ligula porta felis euismod semper. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. </p>
+
+
+
+						<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. Nullam quis risus eget urna mollis ornare vel eu leo. </p>
+
+						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. </p>
+
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
+
+
+
+
+		<div id="specs">
+
+		</div>
+
+		<div id="installing">
+			<div class="section">
+				<div class="grid7 firstcol">
+					<h1>Installing Webfonts</h1>
+
+					<p>Webfonts are supported by all major browser platforms but not all in the same way. There are currently four different font formats that must be included in order to target all browsers. This includes TTF, WOFF, EOT and SVG.</p>
+
+					<h2>1. Upload your webfonts</h2>
+					<p>You must upload your webfont kit to your website. They should be in or near the same directory as your CSS files.</p>
+
+					<h2>2. Include the webfont stylesheet</h2>
+					<p>A special CSS @font-face declaration helps the various browsers select the appropriate font it needs without causing you a bunch of headaches. Learn more about this syntax by reading the <a href="http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax">Fontspring blog post</a> about it. The code for it is as follows:</p>
+
+
+<code>
+@font-face{ 
+	font-family: 'MyWebFont';
+	src: url('WebFont.eot');
+	src: url('WebFont.eot?iefix') format('eot'),
+	     url('WebFont.woff') format('woff'),
+	     url('WebFont.ttf') format('truetype'),
+	     url('WebFont.svg#webfont') format('svg');
+}
+</code>
+
+	<p>We've already gone ahead and generated the code for you. All you have to do is link to the stylesheet in your HTML, like this:</p>
+	<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;stylesheet.css&quot; type=&quot;text/css&quot; charset=&quot;utf-8&quot; /&gt;</code>
+
+					<h2>3. Modify your own stylesheet</h2>
+					<p>To take advantage of your new fonts, you must tell your stylesheet to use them. Look at the original @font-face declaration above and find the property called "font-family." The name linked there will be what you use to reference the font. Prepend that webfont name to the font stack in the "font-family" property, inside the selector you want to change. For example:</p>
+<code>p { font-family: 'MyWebFont', Arial, sans-serif; }</code>
+
+<h2>4. Test</h2>
+<p>Getting webfonts to work cross-browser <em>can</em> be tricky. Use the information in the sidebar to help you if you find that fonts aren't loading in a particular browser.</p>
+				</div>
+
+				<div class="grid5 sidebar">
+					<div class="box">
+						<h2>Troubleshooting<br />Font-Face Problems</h2>
+						<p>Having trouble getting your webfonts to load in your new website? Here are some tips to sort out what might be the problem.</p>
+
+						<h3>Fonts not showing in any browser</h3>
+
+						<p>This sounds like you need to work on the plumbing. You either did not upload the fonts to the correct directory, or you did not link the fonts properly in the CSS. If you've confirmed that all this is correct and you still have a problem, take a look at your .htaccess file and see if requests are getting intercepted.</p>
+
+						<h3>Fonts not loading in iPhone or iPad</h3>
+
+						<p>The most common problem here is that you are serving the fonts from an IIS server. IIS refuses to serve files that have unknown MIME types. If that is the case, you must set the MIME type for SVG to "image/svg+xml" in the server settings. Follow these instructions from Microsoft if you need help.</p>
+
+						<h3>Fonts not loading in Firefox</h3>
+
+						<p>The primary reason for this failure? You are still using a version Firefox older than 3.5. So upgrade already! If that isn't it, then you are very likely serving fonts from a different domain. Firefox requires that all font assets be served from the same domain. Lastly it is possible that you need to add WOFF to your list of MIME types (if you are serving via IIS.)</p>
+
+						<h3>Fonts not loading in IE</h3>
+
+						<p>Are you looking at Internet Explorer on an actual Windows machine or are you cheating by using a service like Adobe BrowserLab? Many of these screenshot services do not render @font-face for IE. Best to test it on a real machine.</p>
+
+						<h3>Fonts not loading in IE9</h3>
+
+						<p>IE9, like Firefox, requires that fonts be served from the same domain as the website. Make sure that is the case.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div id="footer">
+		<p>&copy;2010-2011 Fontspring. All rights reserved.</p>
+	</div>
+</div>
+</body>
+</html>
+ BIN +23.7 KB assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.eot 
+Binary file not shown.
+ 1,458  .../droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.svg 
+Large diffs are not rendered by default.
+
+ BIN +53.9 KB assets/fonts/droid-serif/web-fonts/droidserif_italic_macroman/DroidSerif-Italic-webfont.ttf 
+  
+		</script>
+    
